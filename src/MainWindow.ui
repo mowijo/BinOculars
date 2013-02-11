@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabpane">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -29,6 +29,23 @@
        <attribute name="title">
         <string>Execute SQL</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <layout class="QVBoxLayout" name="sqlconsolelayout">
+            <item>
+             <widget class="QLineEdit" name="status"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QTableView" name="resule"/>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -78,6 +95,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionSql_Console"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Open_database">
@@ -110,6 +128,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSql_Console">
+   <property name="text">
+    <string>Sql Console</string>
+   </property>
+   <property name="toolTip">
+    <string>Move focus to the Sql Console</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>

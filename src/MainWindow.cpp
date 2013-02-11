@@ -4,6 +4,7 @@
 #include "Settings.h"
 #include "DataBase.h"
 #include "DatabaseStructureModel.h"
+#include "SqlConsole.h"
 #include <QAction>
 #include <QDebug>
 #include <QFileDialog>
@@ -20,7 +21,8 @@ public:
     Ui::MainWindow *ui;
     Settings s;
     DataBase *db;
-    DatabaseStructureModel *dsm;
+    TreeModel *dsm;
+    SqlConsole *sqlconsole;
 
     MainWindowPrivate(MainWindow *parent) : QObject(parent)
     {
@@ -37,6 +39,8 @@ public:
     {
         ui = new Ui::MainWindow;
         ui->setupUi(p);
+        sqlconsole = new SqlConsole;
+        ui->sqlconsolelayout->insertWidget(0, sqlconsole);
 
         //Populate "recent files" menu
         QStringList recentfiles = s.recentFiles();
@@ -56,6 +60,7 @@ public:
         connect(ui->action_Open_database, SIGNAL(triggered()), this, SLOT(selectFileToOpen()));
         connect(ui->action_Exit, SIGNAL(triggered()), p, SLOT(close()));
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
+        connect(ui->actionSql_Console, SIGNAL(triggered()), p, SLOT(focusOnSqlConsole()));
 
     }
 
@@ -83,7 +88,7 @@ public slots:
         db = newdb;
         s.addRecentFile(db->currentFileName());
         qDebug() << "Opened " << db->currentFileName();
-        dsm = new DatabaseStructureModel(db);
+        dsm = new TreeModel(db);
         ui->databaseview->setModel(dsm);
 
     }
@@ -128,5 +133,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     d = new MainWindowPrivate(this);
     d->initializeUI();
+}
+
+void MainWindow::focusOnSqlConsole()
+{
+    d->ui->tabpane->setCurrentIndex(1);
+    d->sqlconsole->setFocus();
 }
 
