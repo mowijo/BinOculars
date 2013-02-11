@@ -17,6 +17,16 @@ public:
         this->p = p;
     }
 
+    bool isTableRow(QModelIndex parent)
+    {
+        return !parent.isValid();
+    }
+
+    bool isColumnRow(QModelIndex parent)
+    {
+
+    }
+
 };
 
 DatabaseStructureModel::DatabaseStructureModel(DataBase *database)
@@ -36,7 +46,7 @@ QVariant DatabaseStructureModel::data(const QModelIndex &index, int role) const
 {
     if(role == Qt::DisplayRole)
     {
-        if(!index.parent().isValid())
+        if(d->isTableRow(index.parent()))
         {
             Table *table = d->db->tables()[index.row()];
             switch (index.column())
@@ -59,8 +69,9 @@ QModelIndex DatabaseStructureModel::parent(const QModelIndex &index) const
 
 int DatabaseStructureModel::rowCount(const QModelIndex &parent) const
 {
-    if(!parent.isValid())
+    if(d->isTableRow(parent))
     {
+        //This is a table row.
         return d->db->tables().count();
     }
     else
@@ -71,7 +82,7 @@ int DatabaseStructureModel::rowCount(const QModelIndex &parent) const
 
 QModelIndex DatabaseStructureModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if(!parent.isValid())
+    if(d->isTableRow(parent))
     {
         return createIndex(row, column);
     }
