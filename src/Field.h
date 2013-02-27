@@ -1,16 +1,16 @@
-#ifndef COLUMN_H
-#define COLUMN_H
+#ifndef FIELD_H
+#define FIELD_H
 
 #include <QString>
 #include <QSqlDatabase>
 
-class Column
+class Field
 {
 public:
-    Column();
-    Column(const Column &other);
-    Column &operator==(const Column &other);
-    ~Column();
+    Field();
+    Field(const Field &other);
+    Field &operator==(const Field &other);
+    ~Field();
 
     int id() const;
     QString name() const;
@@ -28,10 +28,10 @@ public:
 
 
 private:
-    class ColumnPrivate *d;
+    class FieldPrivate *d;
 
 };
 
 
 
-#endif // COLUMN_H
+#endif // FIELD_H

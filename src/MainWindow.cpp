@@ -49,7 +49,6 @@ public:
 
         foreach(QString recentfile, recentfiles)
         {
-            qDebug() << "Recent file" << recentfile;
             QAction *a = new QAction(recentfile, this);
             a->setData(QVariant(recentfile));
             connect(a, SIGNAL(triggered()), this, SLOT(openFileActionTriggered()));

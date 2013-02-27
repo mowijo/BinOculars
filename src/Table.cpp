@@ -4,7 +4,8 @@
 #include <QSqlRecord>
 
 #include <QDebug>
-#include "Column.h"
+#include "Field.h"
+
 class TablePrivate
 {
 private:
@@ -15,7 +16,7 @@ public:
     QString name;
     QString creationsql;
     QSqlDatabase *database;
-    QList<Column*> columns;
+    QList<Field*> columns;
     QString error;
     TablePrivate(Table *p)
     {
@@ -61,7 +62,7 @@ bool Table::introspect()
     while(query.next())
     {
         QString error = QObject::tr("Column '%1' missing in PRAGMA for table '%2'.");
-        Column *c = new Column();
+        Field *c = new Field();
         QSqlRecord record = query.record();
 
         int index = record.indexOf("cid");
@@ -144,7 +145,7 @@ QString Table::creationSql() const
     return d->creationsql;
 }
 
-QList<Column *> Table::columns()
+QList<Field *> Table::columns()
 {
     return d->columns;
 }

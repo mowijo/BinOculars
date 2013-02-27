@@ -20,7 +20,7 @@ INCLUDE_DIRECTORIES(
 ADD_SUBDIRECTORY(../lib/sqlhighlighter/src sqlhighlighter)
 
 SET( SOURCES
-	Column.cpp  
+        Field.cpp
 	DataBase.cpp  
 	DatabaseStructureModel.cpp  
 	MainWindow.cpp  

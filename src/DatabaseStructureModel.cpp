@@ -2,7 +2,7 @@
 #include "DatabaseStructureModel.h"
 #include "DataBase.h"
 #include "Table.h"
-#include "Column.h"
+#include "Field.h"
 
 
 
@@ -99,7 +99,7 @@ TreeModel::TreeModel(DataBase *db, QObject *parent)
     foreach(Table* t, db->tables())
     {
         TreeItem *table = new TreeItem(QList<QVariant>() << t->name() << "Table" << "" << t->creationSql().replace("\n", ""));
-        foreach(Column *c, t->columns())
+        foreach(Field *c, t->columns())
         {
             TreeItem *row = new TreeItem(QList<QVariant>() << c->name() << "Field" << c->type() << "");
             table->appendChild(row);

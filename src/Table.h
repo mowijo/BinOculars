@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QList>
 
-class Column;
+class Field;
 class Table
 {
 public:
@@ -21,7 +21,7 @@ public:
     QString name() const;
     QString creationSql() const;
 
-    QList<Column*> columns();
+    QList<Field*> columns();
 
 private:
     Table(const Table &other);

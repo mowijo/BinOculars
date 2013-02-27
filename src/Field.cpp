@@ -1,14 +1,14 @@
-#include "Column.h"
+#include "Field.h"
 #include <QSqlField>
 #include <QSqlQuery>
 #include <QSqlRecord>
 
 #include <QDebug>
 
-class ColumnPrivate
+class FieldPrivate
 {
 private:
-    Column *p;
+    Field *p;
 
 public:
 
@@ -19,12 +19,12 @@ public:
     QString dflt_value;
     bool primarykey;
 
-    ColumnPrivate(Column *p)
+    FieldPrivate(Field *p)
     {
         this->p = p;
     }
 
-    void deepCopy(ColumnPrivate *other)
+    void deepCopy(FieldPrivate *other)
     {
         id = other->id;
         name = other->name;
@@ -35,86 +35,86 @@ public:
     }
 };
 
-Column::Column()
+Field::Field()
 {
-    d = new ColumnPrivate(this);
+    d = new FieldPrivate(this);
 }
 
 
-Column::Column(const Column &other)
+Field::Field(const Field &other)
 {
-    d = new ColumnPrivate(this);
+    d = new FieldPrivate(this);
     d->deepCopy(other.d);
 }
 
-Column &Column::operator ==(const Column &other)
+Field &Field::operator ==(const Field &other)
 {
     if(this == &other) return *this;
     d->deepCopy(other.d);
     return *this;
 }
 
-Column::~Column()
+Field::~Field()
 {
     delete d;
 }
 
-int Column::id() const
+int Field::id() const
 {
     return d->id;
 }
 
-QString Column::name() const
+QString Field::name() const
 {
     return d->name;
 }
 
-QString Column::type() const
+QString Field::type() const
 {
     return d->type;
 }
 
-bool Column::notNull() const
+bool Field::notNull() const
 {
     return d->notnull;
 }
 
-QString Column::dfltValue() const
+QString Field::dfltValue() const
 {
     return d->dflt_value;
 }
 
-bool Column::primaryKey() const
+bool Field::primaryKey() const
 {
     return d->primarykey;
 }
 
-void Column::setId(int id)
+void Field::setId(int id)
 {
     d->id = id;
 }
 
-void Column::setName(QString name)
+void Field::setName(QString name)
 {
     d->name = name;
 }
 
-void Column::setType(QString type)
+void Field::setType(QString type)
 {
     d->type = type;
 }
 
-void Column::setNotNull(bool nn)
+void Field::setNotNull(bool nn)
 {
     d->notnull = nn;
 }
 
-void Column::setDfltValue(QString dflt)
+void Field::setDfltValue(QString dflt)
 {
     d->dflt_value = dflt;
 }
 
-void Column::setPrimaryKey(bool pk)
+void Field::setPrimaryKey(bool pk)
 {
     d->primarykey = pk;
 }
