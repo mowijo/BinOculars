@@ -12,9 +12,12 @@ INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../lib
     ${CMAKE_CURRENT_BINARY_DIR}
 ) 
+
+
+ADD_SUBDIRECTORY(../lib/sqlhighlighter/src sqlhighlighter)
 
 SET( SOURCES
 	Column.cpp  
@@ -34,4 +37,4 @@ SET( FORMS
 QT4_WRAP_UI( UI ${FORMS} )
 
 ADD_EXECUTABLE( CaptainOates ${SOURCES} ${UI})
-TARGET_LINK_LIBRARIES( CaptainOates ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( CaptainOates ${QT_LIBRARIES} tokenizer)

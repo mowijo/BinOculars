@@ -1,5 +1,5 @@
 #include "SqlConsole.h"
-
+#include <sqlhighlighter/src/SqlSyntaxhighLighter.h>
 #include <QDebug>
 
 class SqlConsolePrivate : public QObject
@@ -10,6 +10,8 @@ private:
     SqlConsole *p;
 
 public:
+
+    SqlSyntaxhighLighter shl;
 
     SqlConsolePrivate(SqlConsole *parent) : QObject(parent)
     {
@@ -24,7 +26,9 @@ SqlConsole::SqlConsole(QWidget *parent) :
     QPlainTextEdit(parent)
 {
     d = new SqlConsolePrivate(this);
+    setFont(QFont("courier"));
 
+    d->shl.setDocument(document());
 }
 
 SqlConsole::~SqlConsole()
