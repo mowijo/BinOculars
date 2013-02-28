@@ -7,8 +7,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setOrganizationName("Krill Surfing Humpback Whales");
-    a.setApplicationName("CaptainOates");
+    a.setOrganizationName("Captain Oates & the Krill Surfing Humpback Whales");
+    a.setApplicationName("Binoculars");
     a.setApplicationVersion("1.0");
     Settings s;
     MainWindow w;
@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
     {
         w.openFile(filename);
     }
-
 
     return a.exec();
 }

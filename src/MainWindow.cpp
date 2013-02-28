@@ -117,7 +117,8 @@ public slots:
         ui->actionSql_Console->setEnabled(true);
         emit mainwindow->currentDatabaseIndexChanged(databases.indexOf(newdb));
         emit mainwindow->currentDatabaseChanged(currentdatabase);
-        qDebug() << "Current database is" << currentdatabase->currentFileName();
+
+        mainwindow->setWindowTitle(QCoreApplication::applicationName()+" ["+currentdatabase->currentFileName()+"]");
     }
 
 
