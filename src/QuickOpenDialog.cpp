@@ -6,8 +6,20 @@
 #include <QKeyEvent>
 #include <QItemSelectionModel>
 
-class QuickOpenDialogPrivate : QObject
+class FileListModel : public QStringListModel
 {
+    Qt::ItemFlags flags ( const QModelIndex & index ) const
+    {
+        return Qt::ItemIsSelectable | Qt:: ItemIsEnabled;
+    }
+};
+
+
+
+class QuickOpenDialogPrivate : public QObject
+{
+
+    Q_OBJECT
 
 private:
     QuickOpenDialog *p;
@@ -26,7 +38,6 @@ public:
         delete ui;
     }
 
-public slots:
 
 };
 
@@ -40,6 +51,10 @@ QuickOpenDialog::QuickOpenDialog(QWidget *parent) :
     d->ui->list->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(d->ui->closebutton, SIGNAL(clicked()), this, SLOT(reject()));
     connect(d->ui->openbutton, SIGNAL(clicked()), this, SLOT(accept()));
+
+    connect(d->ui->list, SIGNAL(activated(QModelIndex)), this, SLOT(accept()));
+    connect(d->ui->list, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+
 }
 
 QuickOpenDialog::~QuickOpenDialog()
@@ -49,7 +64,7 @@ QuickOpenDialog::~QuickOpenDialog()
 
 void QuickOpenDialog::setFileList(QStringList files)
 {
-    QStringListModel *qslm = new QStringListModel();
+    QStringListModel *qslm = new FileListModel();
     qslm->setStringList(files);
     d->ui->list->setModel(qslm);
 }
@@ -70,6 +85,12 @@ void QuickOpenDialog::keyPressEvent(QKeyEvent *ke)
     {
         ke->accept();
         accept();
+    }
+    if(ke->key() == Qt::Key_Escape)
+    {
+        ke->accept();
+        reject();
+
     }
     ke->ignore();
 }
