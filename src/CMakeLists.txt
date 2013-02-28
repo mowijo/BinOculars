@@ -31,6 +31,7 @@ SET( SOURCES
 	Settings.cpp  
 	SqlConsole.cpp  
 	Table.cpp  
+        GlobalEventFilter.cpp
 	main.cpp
 )
 

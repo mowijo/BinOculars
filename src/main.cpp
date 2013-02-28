@@ -16,10 +16,12 @@ int main(int argc, char *argv[])
     QuickOpenDialog qod;
 
     qod.setFileList(s.recentFiles());
-    if(qod.exec() == QDialog::Accepted)
+    qod.exec();
+    foreach(QString filename, qod.selectedFiles())
     {
-        qDebug() << "Selected files are" << qod.selectedFiles();
+        w.openFile(filename);
     }
+
 
     return a.exec();
 }

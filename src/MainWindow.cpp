@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
+#include "GlobalEventFilter.h"
 
 class MainWindowPrivate : public QObject
 {
@@ -23,6 +24,7 @@ public:
     DataBase *db;
     TreeModel *dsm;
     SqlConsole *sqlconsole;
+    GlobalEventFilter *globaleventfilter;
 
     MainWindowPrivate(MainWindow *parent) : QObject(parent)
     {
@@ -93,7 +95,7 @@ public slots:
         {
             qFatal("%s:%d: Somebody triggered a openFileActionTriggered from an sender that was clearly not a QAction", __FILE__, __LINE__);
         }
-        openFile(a->data().toString());
+        p->openFile(a->data().toString());
     }
 
     void setCurrentDb(DataBase *newdb)
@@ -110,19 +112,6 @@ public slots:
     }
 
 
-    void openFile(const QString &filename)
-    {
-        DataBase *newdb = new DataBase;
-        if(!newdb->open(filename))
-        {
-            QMessageBox::warning(p, tr("Could not load file"), newdb->lastError());
-            qDebug() << "Could not open file " << newdb->lastError();
-            return;
-        }
-        s.addRecentFile(newdb->currentFileName());
-        setCurrentDb(newdb);
-    }
-
     void selectFileToOpen()
     {
         QString filename = QFileDialog::getOpenFileName(
@@ -133,7 +122,7 @@ public slots:
         if(filename == "") return;
         QFileInfo fi(filename);
         s.setLastOpenBrowserDirectory(fi.absoluteDir().path());
-        openFile(filename);
+        p->openFile(filename);
     }
 
     void save()
@@ -167,6 +156,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     d = new MainWindowPrivate(this);
     d->initializeUI();
+    d->globaleventfilter = new GlobalEventFilter(this);
+
 }
 
 void MainWindow::focusOnSqlConsole()
@@ -184,3 +175,15 @@ void MainWindow::showEvent(QShowEvent *)
 {
 }
 
+bool MainWindow::openFile(const QString &filename)
+{
+    DataBase *newdb = new DataBase;
+    if(!newdb->open(filename))
+    {
+        QMessageBox::warning(this, tr("Could not load file"), newdb->lastError());
+        return false;
+    }
+    d->s.addRecentFile(newdb->currentFileName());
+    d->setCurrentDb(newdb);
+    return true;
+}

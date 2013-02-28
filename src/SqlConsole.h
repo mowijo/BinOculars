@@ -12,7 +12,8 @@ public:
     
 signals:
     void triggered(const QString &query);
-    
+    void databaseSelectorKeyTriggered();
+
 protected:
     void keyPressEvent(QKeyEvent *e);
 

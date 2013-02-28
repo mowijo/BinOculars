@@ -1,6 +1,7 @@
 #include "SqlConsole.h"
 #include <sqlhighlighter/src/SqlSyntaxhighLighter.h>
 #include <QDebug>
+#include <QKeySequence>
 
 class SqlConsolePrivate : public QObject
 {
@@ -43,6 +44,11 @@ void SqlConsole::keyPressEvent(QKeyEvent *e)
         emit triggered(this->toPlainText());
         return;
     }
-
+    if((e->key() == Qt::Key_Tab) && (e->modifiers() & Qt::ControlModifier))
+    {
+        emit databaseSelectorKeyTriggered();
+        e->accept();
+        return;
+    }
     QPlainTextEdit::keyPressEvent(e);
 }

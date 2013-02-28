@@ -12,6 +12,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
 
 
+    bool openFile(const QString &filename);
 public slots:
     void focusOnSqlConsole();
 
