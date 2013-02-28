@@ -16,6 +16,9 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_BINARY_DIR}
 ) 
 
+if (NOT CMAKE_BUILD_TYPE STREQUAL "Release")
+        SET(CMAKE_BUILD_TYPE Debug)
+endif(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 
 ADD_SUBDIRECTORY(../lib/sqlhighlighter/src sqlhighlighter)
 
@@ -23,6 +26,7 @@ SET( SOURCES
         Field.cpp
 	DataBase.cpp  
 	DatabaseStructureModel.cpp  
+        QuickOpenDialog.cpp
 	MainWindow.cpp  
 	Settings.cpp  
 	SqlConsole.cpp  
@@ -31,7 +35,8 @@ SET( SOURCES
 )
 
 SET( FORMS
-	MainWindow.ui 
+    MainWindow.ui
+    QuickOpenDialog.ui
 )
 
 QT4_WRAP_UI( UI ${FORMS} )

@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-
+#include "QuickOpenDialog.h"
 #include "Settings.h"
 #include "DataBase.h"
 #include "DatabaseStructureModel.h"
@@ -40,7 +40,11 @@ public:
         ui = new Ui::MainWindow;
         ui->setupUi(p);
         sqlconsole = new SqlConsole;
-        ui->sqlconsolelayout->insertWidget(0, sqlconsole);
+        QVBoxLayout *vbl = new QVBoxLayout;
+        vbl->addWidget(sqlconsole);
+        connect(sqlconsole, SIGNAL(triggered(QString)), this, SLOT(performQueryOnActiveDatabase(QString)));
+
+        ui->consolegroupbox->setLayout(vbl);
 
         //Populate "recent files" menu
         QStringList recentfiles = s.recentFiles();
@@ -60,6 +64,23 @@ public:
         connect(ui->action_Exit, SIGNAL(triggered()), p, SLOT(close()));
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
         connect(ui->actionSql_Console, SIGNAL(triggered()), p, SLOT(focusOnSqlConsole()));
+    }
+
+    void saveGeometries()
+    {
+        s.beginGroup("Geometries");
+        s.beginGroup("MainWindow");
+        s.setValue("size", p->size());
+        s.setValue("position", p->pos());
+        s.endGroup();
+        s.beginGroup("Console");
+        s.setValue("splitter", ui->splitter->saveState());
+        s.endGroup();
+        s.endGroup();
+    }
+
+    void restoreGeometries()
+    {
 
     }
 
@@ -75,6 +96,20 @@ public slots:
         openFile(a->data().toString());
     }
 
+    void setCurrentDb(DataBase *newdb)
+    {
+        db = newdb;
+        if(dsm) delete dsm;
+        dsm = new TreeModel(db);
+        ui->databaseview->setModel(dsm);
+        ui->tabpane->setEnabled(true);
+        ui->consoletab->setEnabled(true);
+        ui->status->setEnabled(true);
+        ui->result->setEnabled(true);
+        ui->actionSql_Console->setEnabled(true);
+    }
+
+
     void openFile(const QString &filename)
     {
         DataBase *newdb = new DataBase;
@@ -84,12 +119,8 @@ public slots:
             qDebug() << "Could not open file " << newdb->lastError();
             return;
         }
-        db = newdb;
-        s.addRecentFile(db->currentFileName());
-        qDebug() << "Opened " << db->currentFileName();
-        dsm = new TreeModel(db);
-        ui->databaseview->setModel(dsm);
-
+        s.addRecentFile(newdb->currentFileName());
+        setCurrentDb(newdb);
     }
 
     void selectFileToOpen()
@@ -122,6 +153,10 @@ public slots:
         qDebug() << "Save all...";
     }
 
+    void performQueryOnActiveDatabase(const QString query)
+    {
+
+    }
 
 };
 
@@ -138,5 +173,14 @@ void MainWindow::focusOnSqlConsole()
 {
     d->ui->tabpane->setCurrentIndex(1);
     d->sqlconsole->setFocus();
+}
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    d->saveGeometries();
+}
+
+void MainWindow::showEvent(QShowEvent *)
+{
 }
 
