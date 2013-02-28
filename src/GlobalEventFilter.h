@@ -3,14 +3,14 @@
 
 
 #include <QEvent>
-#include <QObject>
+#include <QListWidget>
 #include <QWidget>
 
 /** The GlobalEventFilter monitors events on the entire subtree of QWidgets under root.
 
 @note The GlobalEventFilter instance is automatically deleted along with the QWidget being tracked. */
 
-class GlobalEventFilter : public QObject
+class GlobalEventFilter : public QListWidget
 {
     Q_OBJECT
 

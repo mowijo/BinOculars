@@ -13,30 +13,36 @@ public:
     GlobalEventFilterPrivate(GlobalEventFilter *p)
         : QObject(p)
     {
-        isselectorvisible = false;
-        w = new QListWidget(root);
-        w->addItems(QStringList() << "a" << "B" << "C" << "D");
-        w->hide();
-        w->installEventFilter(p);
-        w->setWindowFlags( Qt::FramelessWindowHint  );
+
+
+
+
 
     }
     QWidget *root;
-    QListWidget *w;
-    bool isselectorvisible;
+
 };
 
 #include "GlobalEventFilter.moc"
 
 GlobalEventFilter::GlobalEventFilter(QWidget *root)
-    : QObject(root)
+    : QListWidget(root)
 {
     d = new GlobalEventFilterPrivate(this);
+
+    hide();
+    addItems(QStringList() << "a" << "B" << "C" << "D");
+    setWindowFlags( Qt::FramelessWindowHint  );
+    resize(300,400);
+    setSelectionMode(QAbstractItemView::SingleSelection);
+    setCurrentRow(0);
+
     d->root = root;
     d->root->installEventFilter(this);
     QList<QWidget *> widgets = d->root->findChildren<QWidget *>();
     foreach(QWidget *w, widgets)
     {
+        if(w == this) continue;
         w->installEventFilter(this);
     }
 }
@@ -44,26 +50,35 @@ GlobalEventFilter::GlobalEventFilter(QWidget *root)
 
 bool GlobalEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
+    static int counter = 0;
     if(event->type() == QEvent::KeyPress)
     {
         QKeyEvent *ke = static_cast<QKeyEvent*>(event);
         if(ke->key() == Qt::Key_Tab && (ke->modifiers() & Qt::ControlModifier) )
         {
-            if(d->isselectorvisible)
+            if(isVisible())
             {
-                qDebug() << "Bladrer";
+                int idx = currentRow();
+                if(idx >= count()-1)
+                {
+                    idx = 0;
+                }
+                else{
+                    idx++;
+                }
+                setCurrentRow(idx);
                 event->ignore();
+                return false;
             }
             else
             {
-                d->isselectorvisible = true;
-                d->w->show();
-
-                QPoint pos((d->root->width() - d->w->width())/2,
-                        (d->root->height() - d->w->height())/2);
-
-                d->w->move(d->root->mapToParent(pos));
+                show();
+                setFocus();
+                QPoint pos((d->root->width() - width())/2,
+                           (d->root->height() - height())/2);
+                move(d->root->mapToParent(pos));
                 event->ignore();
+                return false;
             }
         }
 
@@ -76,9 +91,10 @@ bool GlobalEventFilter::eventFilter(QObject *obj, QEvent *event)
         QKeyEvent *ke = static_cast<QKeyEvent*>(event);
         if(ke->key() == Qt::Key_Control)
         {
-            d->isselectorvisible = false;
-            d->w->hide();
+            hide();
             event->ignore();
+            qDebug() << "Selected index is" << currentRow();
+            return false;
         }
     }
 
