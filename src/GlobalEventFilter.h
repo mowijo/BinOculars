@@ -18,7 +18,11 @@ public:
     GlobalEventFilter(QWidget *root);
 
 signals:
-    void triggered();
+    void databaseIndexSelected(int index);
+
+public slots:
+    void setCurrentDatabaseIndex(int index);
+    void setDatabaseList(const QStringList& list);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
@@ -26,6 +30,7 @@ protected:
 
 private:
     class GlobalEventFilterPrivate *d;
+    friend class GlobalEventFilterPrivate;
 };
 
 

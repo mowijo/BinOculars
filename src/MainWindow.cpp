@@ -16,19 +16,21 @@ class MainWindowPrivate : public QObject
     Q_OBJECT
 
 private:
-    MainWindow * p;
+    MainWindow * mainwindow;
+    QList<DataBase*> databases;
 
 public:
     Ui::MainWindow *ui;
     Settings s;
-    DataBase *db;
+    DataBase *currentdatabase;
     TreeModel *dsm;
     SqlConsole *sqlconsole;
     GlobalEventFilter *globaleventfilter;
 
+
     MainWindowPrivate(MainWindow *parent) : QObject(parent)
     {
-        p = parent;
+        mainwindow = parent;
         ui = 0;
     }
 
@@ -40,7 +42,7 @@ public:
     void initializeUI()
     {
         ui = new Ui::MainWindow;
-        ui->setupUi(p);
+        ui->setupUi(mainwindow);
         sqlconsole = new SqlConsole;
         QVBoxLayout *vbl = new QVBoxLayout;
         vbl->addWidget(sqlconsole);
@@ -63,17 +65,17 @@ public:
 
         // connect actions
         connect(ui->action_Open_database, SIGNAL(triggered()), this, SLOT(selectFileToOpen()));
-        connect(ui->action_Exit, SIGNAL(triggered()), p, SLOT(close()));
+        connect(ui->action_Exit, SIGNAL(triggered()), mainwindow, SLOT(close()));
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
-        connect(ui->actionSql_Console, SIGNAL(triggered()), p, SLOT(focusOnSqlConsole()));
+        connect(ui->actionSql_Console, SIGNAL(triggered()), mainwindow, SLOT(focusOnSqlConsole()));
     }
 
     void saveGeometries()
     {
         s.beginGroup("Geometries");
         s.beginGroup("MainWindow");
-        s.setValue("size", p->size());
-        s.setValue("position", p->pos());
+        s.setValue("size", mainwindow->size());
+        s.setValue("position", mainwindow->pos());
         s.endGroup();
         s.beginGroup("Console");
         s.setValue("splitter", ui->splitter->saveState());
@@ -95,45 +97,72 @@ public slots:
         {
             qFatal("%s:%d: Somebody triggered a openFileActionTriggered from an sender that was clearly not a QAction", __FILE__, __LINE__);
         }
-        p->openFile(a->data().toString());
+        mainwindow->openFile(a->data().toString());
     }
 
     void setCurrentDb(DataBase *newdb)
     {
-        db = newdb;
+        if(databases.indexOf(newdb) < 0)
+        {
+            addDatabase(newdb);
+        }
+        currentdatabase = newdb;
         if(dsm) delete dsm;
-        dsm = new TreeModel(db);
+        dsm = new TreeModel(currentdatabase);
         ui->databaseview->setModel(dsm);
         ui->tabpane->setEnabled(true);
         ui->consoletab->setEnabled(true);
         ui->status->setEnabled(true);
         ui->result->setEnabled(true);
         ui->actionSql_Console->setEnabled(true);
+        emit mainwindow->currentDatabaseIndexChanged(databases.indexOf(newdb));
+        emit mainwindow->currentDatabaseChanged(currentdatabase);
+        qDebug() << "Current database is" << currentdatabase->currentFileName();
+    }
+
+
+    void setCurrentDb(int index)
+    {
+        if(index < 0) return;
+        if(index > databases.length()-1) return;
+        setCurrentDb(databases[index]);
+    }
+
+
+    void addDatabase(DataBase *db)
+    {
+        databases << db;
+        QStringList filenames;
+        foreach(DataBase *d, databases)
+        {
+            filenames << d->currentFileName();
+        }
+        emit mainwindow->openDataBasesChanged(filenames);
     }
 
 
     void selectFileToOpen()
     {
         QString filename = QFileDialog::getOpenFileName(
-                                p,
+                                mainwindow,
                                 "Select a file to open",
                                 s.lastOpenBrowserDirectory(),
                                 "All files (*.*)");
         if(filename == "") return;
         QFileInfo fi(filename);
         s.setLastOpenBrowserDirectory(fi.absoluteDir().path());
-        p->openFile(filename);
+        mainwindow->openFile(filename);
     }
 
     void save()
     {
-        QString filename = db->currentFileName();
+        QString filename = currentdatabase->currentFileName();
         if(filename == "")
         {
 
         }
-        if(!db->save())
-        s.addRecentFile(db->currentFileName());
+        if(!currentdatabase->save())
+        s.addRecentFile(currentdatabase->currentFileName());
 
     }
 
@@ -157,6 +186,9 @@ MainWindow::MainWindow(QWidget *parent) :
     d = new MainWindowPrivate(this);
     d->initializeUI();
     d->globaleventfilter = new GlobalEventFilter(this);
+    connect(this, SIGNAL(openDataBasesChanged(QStringList)), d->globaleventfilter, SLOT(setDatabaseList(QStringList)));
+    connect(this, SIGNAL(currentDatabaseIndexChanged(int)), d->globaleventfilter, SLOT(setCurrentDatabaseIndex(int)));
+    connect(d->globaleventfilter, SIGNAL(databaseIndexSelected(int)), d, SLOT(setCurrentDb(int)));
 
 }
 

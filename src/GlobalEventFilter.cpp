@@ -9,17 +9,63 @@ class GlobalEventFilterPrivate  : QObject
 
     Q_OBJECT
 
+private:
+
+    GlobalEventFilter *owner;
+
+public:
+    QWidget *root;
+
 public:
     GlobalEventFilterPrivate(GlobalEventFilter *p)
         : QObject(p)
     {
-
-
-
-
-
+        owner = p;
     }
-    QWidget *root;
+
+
+    void handleKeyRelease(QKeyEvent *ke)
+    {
+        if(ke->key() == Qt::Key_Control)
+        {
+            owner->hide();
+            ke->ignore();
+            emit owner->databaseIndexSelected(owner->currentRow());
+        }
+    }
+
+
+    void handleKeyPress(QKeyEvent *ke)
+    {
+        if(ke->key() == Qt::Key_Tab && (ke->modifiers() & Qt::ControlModifier) )
+        {
+            if(owner->isVisible())
+            {
+                int idx = owner->currentRow();
+                if(idx >= owner->count()-1)
+                {
+                    idx = 0;
+                }
+                else{
+                    idx++;
+                }
+                owner->setCurrentRow(idx);
+                ke->ignore();
+            }
+            else
+            {
+                if(owner->count() > 0)
+                {
+                    owner->show();
+                    owner->setFocus();
+                    QPoint pos((root->width() - owner->width())/2,
+                               (root->height() - owner->height())/2);
+                    owner->move(root->mapToParent(pos));
+                }
+                ke->ignore();
+            }
+        }
+    }
 
 };
 
@@ -31,7 +77,6 @@ GlobalEventFilter::GlobalEventFilter(QWidget *root)
     d = new GlobalEventFilterPrivate(this);
 
     hide();
-    addItems(QStringList() << "a" << "B" << "C" << "D");
     setWindowFlags( Qt::FramelessWindowHint  );
     resize(300,400);
     setSelectionMode(QAbstractItemView::SingleSelection);
@@ -48,58 +93,32 @@ GlobalEventFilter::GlobalEventFilter(QWidget *root)
 }
 
 
+void GlobalEventFilter::setCurrentDatabaseIndex(int index)
+{
+    if(index < 0) return;
+    if(index >= count()) return;
+    setCurrentRow(index);
+}
+
+void GlobalEventFilter::setDatabaseList(const QStringList& list)
+{
+    clear();
+    addItems(list);
+}
+
 bool GlobalEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
-    static int counter = 0;
     if(event->type() == QEvent::KeyPress)
     {
         QKeyEvent *ke = static_cast<QKeyEvent*>(event);
-        if(ke->key() == Qt::Key_Tab && (ke->modifiers() & Qt::ControlModifier) )
-        {
-            if(isVisible())
-            {
-                int idx = currentRow();
-                if(idx >= count()-1)
-                {
-                    idx = 0;
-                }
-                else{
-                    idx++;
-                }
-                setCurrentRow(idx);
-                event->ignore();
-                return false;
-            }
-            else
-            {
-                show();
-                setFocus();
-                QPoint pos((d->root->width() - width())/2,
-                           (d->root->height() - height())/2);
-                move(d->root->mapToParent(pos));
-                event->ignore();
-                return false;
-            }
-        }
-
-
-
+        d->handleKeyPress(ke);
     }
 
     if(event->type() == QEvent::KeyRelease)
     {
         QKeyEvent *ke = static_cast<QKeyEvent*>(event);
-        if(ke->key() == Qt::Key_Control)
-        {
-            hide();
-            event->ignore();
-            qDebug() << "Selected index is" << currentRow();
-            return false;
-        }
+        d->handleKeyRelease(ke);
     }
-
-
-
 
     if(event->type() == QEvent::ChildAdded)
     {
