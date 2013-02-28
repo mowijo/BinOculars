@@ -41,6 +41,11 @@ public:
 
         //First, introspect all tables.
         QSqlQuery query  = connection.exec("SELECT name, sql FROM sqlite_master where type='table'");
+        if(query.lastError().type() != QSqlError::NoError)
+        {
+            error = query.lastError().text();
+            return false;
+        }
         while(query.next())
         {
             Table *t = new Table(query.value(0).toString(), query.value(1).toString());
