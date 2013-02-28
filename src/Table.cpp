@@ -129,6 +129,7 @@ bool Table::introspect()
         }
         d->columns << c;
     }
+    return true;
 }
 
 QString Table::lastError() const

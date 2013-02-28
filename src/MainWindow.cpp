@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
-#include "GlobalEventFilter.h"
+#include "DatabaseSelector.h"
 
 class MainWindowPrivate : public QObject
 {
@@ -25,7 +25,7 @@ public:
     DataBase *currentdatabase;
     TreeModel *dsm;
     SqlConsole *sqlconsole;
-    GlobalEventFilter *globaleventfilter;
+    DatabaseSelector *databaseselector;
 
 
     MainWindowPrivate(MainWindow *parent) : QObject(parent)
@@ -185,10 +185,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     d = new MainWindowPrivate(this);
     d->initializeUI();
-    d->globaleventfilter = new GlobalEventFilter(this);
-    connect(this, SIGNAL(openDataBasesChanged(QStringList)), d->globaleventfilter, SLOT(setDatabaseList(QStringList)));
-    connect(this, SIGNAL(currentDatabaseIndexChanged(int)), d->globaleventfilter, SLOT(setCurrentDatabaseIndex(int)));
-    connect(d->globaleventfilter, SIGNAL(databaseIndexSelected(int)), d, SLOT(setCurrentDb(int)));
+    d->databaseselector = new DatabaseSelector(this);
+    connect(this, SIGNAL(openDataBasesChanged(QStringList)), d->databaseselector, SLOT(setDatabaseList(QStringList)));
+    connect(this, SIGNAL(currentDatabaseIndexChanged(int)), d->databaseselector, SLOT(setCurrentDatabaseIndex(int)));
+    connect(d->databaseselector, SIGNAL(databaseIndexSelected(int)), d, SLOT(setCurrentDb(int)));
 
 }
 
