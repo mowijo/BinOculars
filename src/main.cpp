@@ -13,13 +13,16 @@ int main(int argc, char *argv[])
     Settings s;
     MainWindow w;
     w.show();
-    QuickOpenDialog qod;
 
-    qod.setFileList(s.recentFiles());
-    qod.exec();
-    foreach(QString filename, qod.selectedFiles())
+    if(s.recentFiles().count() > 0)
     {
-        w.openFile(filename);
+        QuickOpenDialog qod;
+        qod.setFileList(s.recentFiles());
+        qod.exec();
+        foreach(QString filename, qod.selectedFiles())
+        {
+            w.openFile(filename);
+        }
     }
 
     return a.exec();
