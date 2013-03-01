@@ -14,94 +14,45 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <widget class="QTabWidget" name="tabpane">
-      <property name="enabled">
-       <bool>false</bool>
+     <widget class="QSplitter" name="mainsplitter">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Browse Data</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="consoletab">
-       <property name="enabled">
-        <bool>false</bool>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>View</string>
        </property>
-       <attribute name="title">
-        <string>Execute SQL</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QSplitter" name="splitter">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <widget class="QGroupBox" name="consolegroupbox">
-           <property name="title">
-            <string>&amp;Console</string>
-           </property>
-          </widget>
-          <widget class="QWidget" name="layoutWidget">
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QGroupBox" name="groupBox_2">
-              <property name="title">
-               <string>&amp;Status</string>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <item>
-                <widget class="QLineEdit" name="status">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButton">
-                 <property name="text">
-                  <string>Cop&amp;y to clipboard</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox">
-              <property name="title">
-               <string>&amp;Result</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <item>
-                <widget class="QTableView" name="result">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </widget>
+         <widget class="QStackedWidget" name="viewstack">
+          <widget class="QWidget" name="page"/>
+          <widget class="QWidget" name="page_2"/>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>Database Structure</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QTreeView" name="databaseview"/>
-        </item>
-       </layout>
+      <widget class="QSplitter" name="console_log_splitter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="QGroupBox" name="consoleframe">
+        <property name="title">
+         <string>SQL Console</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2"/>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>SQL Log</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QTextEdit" name="log"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>

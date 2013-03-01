@@ -45,11 +45,8 @@ public:
         ui = new Ui::MainWindow;
         ui->setupUi(mainwindow);
         sqlconsole = new SqlConsole;
-        QVBoxLayout *vbl = new QVBoxLayout;
-        vbl->addWidget(sqlconsole);
-        ui->consolegroupbox->setLayout(vbl);
+        ui->consoleframe->layout()->addWidget(sqlconsole);
         connect(sqlconsole, SIGNAL(triggered(QString)), this, SLOT(performQueryOnActiveDatabase(QString)));
-
         ui->action_Recent_files->setEnabled(s.recentFiles().count() > 0);
         connect(ui->action_Recent_files, SIGNAL(triggered()), this, SLOT(openRecentFiles()));
 
@@ -59,6 +56,8 @@ public:
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
         connect(ui->actionSql_Console, SIGNAL(triggered()), mainwindow, SLOT(focusOnSqlConsole()));
 
+        restoreGeometries();
+
     }
 
     void saveGeometries()
@@ -67,15 +66,39 @@ public:
         s.beginGroup("MainWindow");
         s.setValue("size", mainwindow->size());
         s.setValue("position", mainwindow->pos());
+        if(mainwindow->isMaximized())
+        {
+            s.setValue("isMaximized", mainwindow->isMaximized());
+        }
+        else
+        {
+            s.remove("isMaximized");
+        }
+        s.setValue("splitter", ui->mainsplitter->saveState());
         s.endGroup();
         s.beginGroup("Console");
-        s.setValue("splitter", ui->splitter->saveState());
+        s.setValue("splitter", ui->console_log_splitter->saveState());
         s.endGroup();
         s.endGroup();
     }
 
     void restoreGeometries()
     {
+        s.beginGroup("Geometries");
+
+        s.beginGroup("MainWindow");
+        if(s.contains("size")) mainwindow->resize(s.value("size").toSize());
+        if(s.contains("position")) mainwindow->move(s.value("position").toPoint());
+        if(s.contains("isMaximized")) mainwindow->showMaximized();
+        if(s.contains("splitter")) ui->mainsplitter->restoreState(s.value("splitter").toByteArray());
+        s.endGroup();
+
+        s.beginGroup("Console");
+        if(s.contains("splitter")) ui->console_log_splitter->restoreState(s.value("splitter").toByteArray());
+        s.endGroup();
+
+        s.endGroup();
+
 
     }
 
@@ -120,11 +143,7 @@ public slots:
         currentdatabase = newdb;
         if(dsm) delete dsm;
         dsm = new TreeModel(currentdatabase);
-        ui->databaseview->setModel(dsm);
-        ui->tabpane->setEnabled(true);
-        ui->consoletab->setEnabled(true);
-        ui->status->setEnabled(true);
-        ui->result->setEnabled(true);
+        sqlconsole->setEnabled(true);
         ui->actionSql_Console->setEnabled(true);
         emit mainwindow->currentDatabaseIndexChanged(databases.indexOf(newdb));
         emit mainwindow->currentDatabaseChanged(currentdatabase);
@@ -206,7 +225,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::focusOnSqlConsole()
 {
-    d->ui->tabpane->setCurrentIndex(1);
     d->sqlconsole->setFocus();
 }
 
