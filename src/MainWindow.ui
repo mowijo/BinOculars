@@ -20,15 +20,20 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QGroupBox" name="groupBox_3">
+      <widget class="QGroupBox" name="viewsframe">
        <property name="title">
         <string>View</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QStackedWidget" name="viewstack">
-          <widget class="QWidget" name="page"/>
-          <widget class="QWidget" name="page_2"/>
+          <property name="currentIndex">
+           <number>3</number>
+          </property>
+          <widget class="QWidget" name="browse"/>
+          <widget class="QWidget" name="explore"/>
+          <widget class="QWidget" name="modify"/>
+          <widget class="QWidget" name="queryresults"/>
          </widget>
         </item>
        </layout>
@@ -43,7 +48,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2"/>
        </widget>
-       <widget class="QGroupBox" name="groupBox_2">
+       <widget class="QGroupBox" name="logframe">
         <property name="title">
          <string>SQL Log</string>
         </property>
@@ -78,7 +83,17 @@
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
+   <widget class="QMenu" name="menuViews">
+    <property name="title">
+     <string>&amp;Views</string>
+    </property>
+    <addaction name="actionBrowse"/>
+    <addaction name="actionExplore"/>
+    <addaction name="actionModify"/>
+    <addaction name="actionQuery"/>
+   </widget>
    <addaction name="menu_Files"/>
+   <addaction name="menuViews"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -88,6 +103,10 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionSql_Console"/>
+   <addaction name="actionBrowse"/>
+   <addaction name="actionExplore"/>
+   <addaction name="actionModify"/>
+   <addaction name="actionQuery"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Open_database">
@@ -142,6 +161,50 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="actionBrowse">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Browse</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionExplore">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Explore</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionModify">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Modify</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionQuery">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Display </string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
  </widget>

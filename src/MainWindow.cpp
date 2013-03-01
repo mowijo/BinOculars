@@ -57,6 +57,8 @@ public:
         connect(ui->actionSql_Console, SIGNAL(triggered()), mainwindow, SLOT(focusOnSqlConsole()));
 
         restoreGeometries();
+        disableGuiForDatabase();
+
 
     }
 
@@ -143,14 +145,43 @@ public slots:
         currentdatabase = newdb;
         if(dsm) delete dsm;
         dsm = new TreeModel(currentdatabase);
-        sqlconsole->setEnabled(true);
-        ui->actionSql_Console->setEnabled(true);
         emit mainwindow->currentDatabaseIndexChanged(databases.indexOf(newdb));
         emit mainwindow->currentDatabaseChanged(currentdatabase);
-
         mainwindow->setWindowTitle(QCoreApplication::applicationName()+" ["+currentdatabase->currentFileName()+"]");
+        enableGuiForDatabase();
     }
 
+
+    void setGuiForDatabase(bool enabled)
+    {
+        static QList<QWidget*> widgets;
+        static QList<QAction*> actions;
+        if(widgets.count() == 0)
+        {
+            widgets << ui->viewsframe << ui->menuViews << ui->consoleframe << ui->logframe;
+        }
+        if(actions.count() == 0)
+        {
+            actions << ui->actionSql_Console  << ui->actionBrowse << ui->actionExplore << ui->actionModify
+                   << ui->actionQuery << ui->actionSave_all << ui->action_Save;
+        }
+        foreach(QWidget *w, widgets) w->setEnabled(enabled);
+        foreach(QAction *a, actions) a->setEnabled(enabled);
+
+
+    }
+
+    void enableGuiForDatabase()
+    {
+        setGuiForDatabase(true);
+    }
+
+
+    void disableGuiForDatabase()
+    {
+        setGuiForDatabase(false);
+
+    }
 
     void setCurrentDb(int index)
     {
