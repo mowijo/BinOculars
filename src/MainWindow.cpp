@@ -7,6 +7,7 @@
 #include "SqlConsole.h"
 #include <QAction>
 #include <QDebug>
+#include <QSet>
 #include <QFileDialog>
 #include <QMessageBox>
 #include "DatabaseSelector.h"
@@ -80,11 +81,18 @@ public:
 
 public slots:
 
+    /** Will offer a list of recent files that are not already open*/
     void openRecentFiles()
     {
+
+        QSet<QString> openfiles;
+        foreach(DataBase*db, databases)
+        {
+            openfiles << db->currentFileName();
+        }
         QuickOpenDialog qod;
         qod.displayDoNotShowAgainSelector(false);
-        qod.setFileList(s.recentFiles());
+        qod.setFileList((QSet<QString>::fromList(s.recentFiles()) - openfiles).toList());
         if(qod.exec() != QDialog::Accepted) return;
 
         foreach(QString filename, qod.selectedFiles())
