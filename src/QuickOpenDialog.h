@@ -14,6 +14,7 @@ public:
     void setFileList(QStringList files);
     QStringList selectedFiles() const;
     bool shouldIgnoreNextTime() const;
+    void displayDoNotShowAgainSelector(bool show);
 
 
 protected:

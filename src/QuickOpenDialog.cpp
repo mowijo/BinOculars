@@ -72,6 +72,8 @@ void QuickOpenDialog::setFileList(QStringList files)
 QStringList QuickOpenDialog::selectedFiles() const
 {
     QStringList selected;
+    if(!d->ui->list->selectionModel()) return selected;
+
     foreach(QModelIndex index, d->ui->list->selectionModel()->selectedRows())
     {
         selected << d->ui->list->model()->data(index).toString();
@@ -81,16 +83,16 @@ QStringList QuickOpenDialog::selectedFiles() const
 
 void QuickOpenDialog::keyPressEvent(QKeyEvent *ke)
 {
-    if((ke->key() == Qt::Key_Return) && (ke->modifiers() && Qt::ControlModifier))
-    {
-        ke->accept();
-        accept();
-    }
     if(ke->key() == Qt::Key_Escape)
     {
         ke->accept();
         reject();
-
+        return;
     }
     ke->ignore();
+}
+
+void QuickOpenDialog::displayDoNotShowAgainSelector(bool show)
+{
+    d->ui->memorylabel->hide();
 }

@@ -46,28 +46,18 @@ public:
         sqlconsole = new SqlConsole;
         QVBoxLayout *vbl = new QVBoxLayout;
         vbl->addWidget(sqlconsole);
+        ui->consolegroupbox->setLayout(vbl);
         connect(sqlconsole, SIGNAL(triggered(QString)), this, SLOT(performQueryOnActiveDatabase(QString)));
 
-        ui->consolegroupbox->setLayout(vbl);
-
-        //Populate "recent files" menu
-        QStringList recentfiles = s.recentFiles();
-
-        ui->menu_Recent_files->setEnabled(recentfiles.size() > 0);
-
-        foreach(QString recentfile, recentfiles)
-        {
-            QAction *a = new QAction(recentfile, this);
-            a->setData(QVariant(recentfile));
-            connect(a, SIGNAL(triggered()), this, SLOT(openFileActionTriggered()));
-            ui->menu_Recent_files->addAction(a);
-        }
+        ui->action_Recent_files->setEnabled(s.recentFiles().count() > 0);
+        connect(ui->action_Recent_files, SIGNAL(triggered()), this, SLOT(openRecentFiles()));
 
         // connect actions
         connect(ui->action_Open_database, SIGNAL(triggered()), this, SLOT(selectFileToOpen()));
         connect(ui->action_Exit, SIGNAL(triggered()), mainwindow, SLOT(close()));
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
         connect(ui->actionSql_Console, SIGNAL(triggered()), mainwindow, SLOT(focusOnSqlConsole()));
+
     }
 
     void saveGeometries()
@@ -89,6 +79,19 @@ public:
     }
 
 public slots:
+
+    void openRecentFiles()
+    {
+        QuickOpenDialog qod;
+        qod.displayDoNotShowAgainSelector(false);
+        qod.setFileList(s.recentFiles());
+        if(qod.exec() != QDialog::Accepted) return;
+
+        foreach(QString filename, qod.selectedFiles())
+        {
+            mainwindow->openFile(filename);
+        }
+    }
 
     void openFileActionTriggered()
     {

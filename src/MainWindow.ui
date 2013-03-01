@@ -120,12 +120,7 @@
     <property name="title">
      <string>&amp;Files</string>
     </property>
-    <widget class="QMenu" name="menu_Recent_files">
-     <property name="title">
-      <string>&amp;Recent files</string>
-     </property>
-    </widget>
-    <addaction name="menu_Recent_files"/>
+    <addaction name="action_Recent_files"/>
     <addaction name="action_Open_database"/>
     <addaction name="action_Save"/>
     <addaction name="actionSave_all"/>
@@ -188,6 +183,14 @@
    </property>
    <property name="shortcut">
     <string>Alt+C</string>
+   </property>
+  </action>
+  <action name="action_Recent_files">
+   <property name="text">
+    <string>&amp;Recent files...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
    </property>
   </action>
  </widget>
