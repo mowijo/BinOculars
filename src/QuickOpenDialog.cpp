@@ -44,7 +44,7 @@ public:
 #include "QuickOpenDialog.moc"
 
 QuickOpenDialog::QuickOpenDialog(QWidget *parent) :
-    QDialog(parent)
+    RememberDialog(parent)
 {
     d = new QuickOpenDialogPrivate(this);
     d->ui->setupUi(this);
@@ -58,7 +58,7 @@ QuickOpenDialog::QuickOpenDialog(QWidget *parent) :
 }
 
 QuickOpenDialog::~QuickOpenDialog()
-{    
+{
 
 }
 
@@ -92,7 +92,26 @@ void QuickOpenDialog::keyPressEvent(QKeyEvent *ke)
     ke->ignore();
 }
 
+void QuickOpenDialog::hideEvent(QHideEvent *)
+{
+    if(!d->ui->memorylabel->isHidden())
+    {
+        rememberAsShouldShow(!d->ui->memorylabel->isChecked());
+    }
+}
+
 void QuickOpenDialog::displayDoNotShowAgainSelector(bool show)
 {
     d->ui->memorylabel->hide();
+
+}
+
+QString QuickOpenDialog::rememberDialogLabel() const
+{
+    return tr("Recent Databases");
+}
+
+QString QuickOpenDialog::rememberDialogDescription() const
+{
+    return tr("A dialog that pops up at application launch allowing for easy access to recently opened databases.");
 }

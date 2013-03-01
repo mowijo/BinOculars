@@ -14,14 +14,18 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
+
     if(s.recentFiles().count() > 0)
     {
         QuickOpenDialog qod;
-        qod.setFileList(s.recentFiles());
-        qod.exec();
-        foreach(QString filename, qod.selectedFiles())
+        if(qod.shouldShow())
         {
-            w.openFile(filename);
+            qod.setFileList(s.recentFiles());
+            qod.exec();
+            foreach(QString filename, qod.selectedFiles())
+            {
+                w.openFile(filename);
+            }
         }
     }
 

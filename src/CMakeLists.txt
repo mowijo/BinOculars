@@ -27,6 +27,7 @@ SET( SOURCES
 	DataBase.cpp  
 	DatabaseStructureModel.cpp  
         QuickOpenDialog.cpp
+        RememberDialog.cpp
 	MainWindow.cpp  
 	Settings.cpp  
 	SqlConsole.cpp  

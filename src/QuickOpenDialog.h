@@ -3,8 +3,9 @@
 
 #include <QDialog>
 #include <QStringList>
+#include "RememberDialog.h"
 
-class QuickOpenDialog : public QDialog
+class QuickOpenDialog : public RememberDialog
 {
     Q_OBJECT
     
@@ -16,9 +17,13 @@ public:
     bool shouldIgnoreNextTime() const;
     void displayDoNotShowAgainSelector(bool show);
 
+    QString rememberDialogLabel() const;
+    QString rememberDialogDescription() const;
+
 
 protected:
     void keyPressEvent(QKeyEvent *);
+    void hideEvent(QHideEvent *);
 
 private:
     class QuickOpenDialogPrivate *d;
