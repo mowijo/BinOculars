@@ -127,6 +127,11 @@ QList<Table *> DataBase::tables()
     return d->tables;
 }
 
+QSqlDatabase * DataBase::connection() const
+{
+    return &d->connection;
+}
+
 bool DataBase::save(const QString &filename)
 {
     if(filename == "") return d->save(d->filename);

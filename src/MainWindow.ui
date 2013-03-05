@@ -90,7 +90,9 @@
     <addaction name="actionBrowse"/>
     <addaction name="actionExplore"/>
     <addaction name="actionModify"/>
-    <addaction name="actionQuery"/>
+    <addaction name="actionResult"/>
+    <addaction name="separator"/>
+    <addaction name="actionSpawn_Result"/>
    </widget>
    <addaction name="menu_Files"/>
    <addaction name="menuViews"/>
@@ -106,7 +108,7 @@
    <addaction name="actionBrowse"/>
    <addaction name="actionExplore"/>
    <addaction name="actionModify"/>
-   <addaction name="actionQuery"/>
+   <addaction name="actionResult"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Open_database">
@@ -120,9 +122,6 @@
   <action name="action_Exit">
    <property name="text">
     <string>&amp;Exit</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="action_Save">
@@ -152,7 +151,7 @@
     <string>Move focus to the Sql Console</string>
    </property>
    <property name="shortcut">
-    <string>Alt+C</string>
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="action_Recent_files">
@@ -164,6 +163,9 @@
    </property>
   </action>
   <action name="actionBrowse">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -175,6 +177,9 @@
    </property>
   </action>
   <action name="actionExplore">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -186,6 +191,9 @@
    </property>
   </action>
   <action name="actionModify">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -196,15 +204,29 @@
     <string>Ctrl+M</string>
    </property>
   </action>
-  <action name="actionQuery">
+  <action name="actionResult">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Display </string>
+    <string>Results</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionSpawn_Result">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Spawn Result</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
  </widget>

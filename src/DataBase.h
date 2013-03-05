@@ -5,7 +5,7 @@
 #include <QList>
 
 class Table;
-
+class QSqlDatabase;
 class DataBase : public QObject
 {
     Q_OBJECT
@@ -18,6 +18,7 @@ public:
     bool save(const QString &filename = "");
     QString lastError() const;
     QList<Table*> tables();
+    QSqlDatabase * connection() const;
     
 signals:
     

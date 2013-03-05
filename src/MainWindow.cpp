@@ -6,7 +6,14 @@
 #include "DatabaseStructureModel.h"
 #include "SqlConsole.h"
 #include <QAction>
+#include <QTableView>
 #include <QDebug>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlResult>
+#include "QueryResultModel.h"
 #include <QSet>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -27,16 +34,21 @@ public:
     TreeModel *dsm;
     SqlConsole *sqlconsole;
     DatabaseSelector *databaseselector;
+    QSqlDatabase qdb;
 
+    QTableView resultview;
+    QueryResultModel *currentresult;
 
     MainWindowPrivate(MainWindow *parent) : QObject(parent)
     {
         mainwindow = parent;
         ui = 0;
+        currentresult = 0;
     }
 
     ~MainWindowPrivate()
     {
+        if(currentresult) delete currentresult;
         if(ui) delete ui;
     }
 
@@ -50,11 +62,27 @@ public:
         ui->action_Recent_files->setEnabled(s.recentFiles().count() > 0);
         connect(ui->action_Recent_files, SIGNAL(triggered()), this, SLOT(openRecentFiles()));
 
+
+        QActionGroup *g = new QActionGroup(mainwindow);
+        g->addAction(ui->actionBrowse);
+        g->addAction(ui->actionExplore);
+        g->addAction(ui->actionModify);
+        g->addAction(ui->actionResult);
+        g->setExclusive(true);
+
+
+        QHBoxLayout *hbl = new QHBoxLayout;
+        hbl->addWidget(&resultview);
+        ui->queryresults->setLayout(hbl);
+
+
+
         // connect actions
         connect(ui->action_Open_database, SIGNAL(triggered()), this, SLOT(selectFileToOpen()));
         connect(ui->action_Exit, SIGNAL(triggered()), mainwindow, SLOT(close()));
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
         connect(ui->actionSql_Console, SIGNAL(triggered()), mainwindow, SLOT(focusOnSqlConsole()));
+        connect(ui->actionSpawn_Result, SIGNAL(triggered()), this, SLOT(spawnResult()));
 
         restoreGeometries();
         disableGuiForDatabase();
@@ -143,7 +171,10 @@ public slots:
             addDatabase(newdb);
         }
         currentdatabase = newdb;
-        if(dsm) delete dsm;
+        if(!dsm)
+        {
+            ui->actionExplore->setChecked(true);
+        }
         dsm = new TreeModel(currentdatabase);
         emit mainwindow->currentDatabaseIndexChanged(databases.indexOf(newdb));
         emit mainwindow->currentDatabaseChanged(currentdatabase);
@@ -163,7 +194,7 @@ public slots:
         if(actions.count() == 0)
         {
             actions << ui->actionSql_Console  << ui->actionBrowse << ui->actionExplore << ui->actionModify
-                   << ui->actionQuery << ui->actionSave_all << ui->action_Save;
+                   << ui->actionResult<< ui->actionSave_all << ui->action_Save;
         }
         foreach(QWidget *w, widgets) w->setEnabled(enabled);
         foreach(QAction *a, actions) a->setEnabled(enabled);
@@ -222,11 +253,26 @@ public slots:
         if(filename == "")
         {
 
+
         }
         if(!currentdatabase->save())
         s.addRecentFile(currentdatabase->currentFileName());
 
     }
+
+
+    void spawnResult()
+    {
+        if(!currentresult) return;
+        QTableView *qtw = new QTableView();
+        QueryResultModel *qrm = currentresult->clone();
+        qtw->setAttribute(Qt::WA_DeleteOnClose);
+        qrm->setParent(qtw);
+        qtw->setModel(qrm);
+        qtw->show();
+
+    }
+
 
     void saveAll()
     {
@@ -235,6 +281,20 @@ public slots:
 
     void performQueryOnActiveDatabase(const QString query)
     {
+        if(currentresult) delete currentresult;
+
+        QSqlQuery q = currentdatabase->connection()->exec(query);
+
+
+        if(q.lastError().type() != QSqlError::NoError)
+        {
+            qDebug() << q.lastError().text();
+            return;
+        }
+
+        currentresult = new QueryResultModel(q);
+        resultview.setModel(currentresult);
+        ui->actionSpawn_Result->setEnabled(true);
 
     }
 
