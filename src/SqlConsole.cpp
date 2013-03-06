@@ -3,6 +3,95 @@
 #include <QDebug>
 #include <QKeySequence>
 
+
+class HistoryStack
+{
+private:
+    int pointer;
+    QStringList history;
+    QString currenttext;
+    int MAXSIZE;
+
+    void clear()
+    {
+        pointer = -1;
+        MAXSIZE = 5;
+        history.clear();
+        currenttext = "";
+    }
+
+public:
+    HistoryStack()
+    {
+        clear();
+    }
+
+    QString previousCommand()
+    {
+        int pointerbefore = pointer;
+        QString r;
+        if(pointer >= history.size())
+        {
+            pointer = history.size()-1;
+        }
+        if(pointer < 0)
+        {
+            r = "";
+        }
+        else
+        {
+            r = history.at(pointer);
+            pointer--;
+        }
+        qDebug() << "I return " << r << "Stack is " << history << "pointer was" << pointerbefore << "pointer is" << pointer;
+        return r;
+    }
+
+    QString nextCommand()
+    {
+        int pointerbefore = pointer;
+        QString r;
+        if(pointer < 0)
+        {
+            pointer = 1;
+        }
+        if(pointer >= history.size())
+        {
+            r = currenttext;
+        }
+        else
+        {
+            r = history.at(pointer);
+            pointer++;
+        }
+        qDebug() << "I return " << r << "Stack is " << history << "pointer was" << pointerbefore << "pointer is" << pointer;
+        return r;
+    }
+
+    void pushCommand(const QString &c)
+    {
+        history.push_back(c);
+        if(history.size() > MAXSIZE) history.takeFirst();
+        pointer++;
+        if(pointer >= MAXSIZE) pointer = MAXSIZE - 1;
+        qDebug() << "Push" << c << "Stack is " << history << "pointer is" << pointer;
+
+    }
+
+    void setCurrentText(const QString text)
+    {
+        currenttext = text;
+    }
+
+    void setHistory(QStringList h)
+    {
+        clear();
+        foreach(QString c, h) pushCommand(c);
+    }
+
+
+};
+
 class SqlConsolePrivate : public QObject
 {
     Q_OBJECT
@@ -13,49 +102,12 @@ private:
 public:
 
     SqlSyntaxhighLighter shl;
-    QStringList historystack;   //First is oldest.
-    int historystackpointer;
-    int MAXSTACKSIZE;
-    QString historycurrenttext;
+    HistoryStack history;
 
     SqlConsolePrivate(SqlConsole *parent) : QObject(parent)
     {
         p = parent;
-        historystackpointer = -1;
-        MAXSTACKSIZE = 5;
     }
-
-    void pushCommandOnHistoryStack(const QString &text)
-    {
-        if(text == historystack.last()) return;
-        historystack.append(text);
-        if(historystack.size() > MAXSTACKSIZE)
-        {
-            historystack.takeFirst();
-            historystackpointer = MAXSTACKSIZE;
-        }
-        else
-        {
-            historystackpointer++;
-        }
-    }
-
-
-    QString moveStackPointerTowardsOlder(int step = 1)
-    {
-        historystackpointer -= step;
-        if(historystackpointer < 0) historystackpointer = 0;
-        return historystack[historystackpointer];
-    }
-
-    QString moveStackPointerTowardsNewer(int step = 1)
-    {
-        if(historystackpointer >= historystack.size()-1) return historycurrenttext;
-        historystackpointer += step;
-        if(historystackpointer >= historystack.size()) historystackpointer = historystack.size()-1;
-        return historystack[historystackpointer];
-    }
-
 
 };
 
@@ -74,13 +126,22 @@ SqlConsole::~SqlConsole()
 {
 }
 
+
+void SqlConsole::setHistory(const QStringList &history)
+{
+    d->history.setHistory(history);
+}
+
 void SqlConsole::keyPressEvent(QKeyEvent *e)
 {
 
     if((e->key() == Qt::Key_Return) && (e->modifiers() & Qt::ControlModifier))
     {
-        emit triggered(this->toPlainText());
-        d->pushCommandOnHistoryStack(this->toPlainText());
+        if(this->toPlainText() != "")
+        {
+            d->history.pushCommand(this->toPlainText());
+            emit triggered(this->toPlainText());
+        }
         return;
     }
     if((e->key() == Qt::Key_Tab) && (e->modifiers() & Qt::ControlModifier))
@@ -91,20 +152,21 @@ void SqlConsole::keyPressEvent(QKeyEvent *e)
     }
     if((e->key() == Qt::Key_Up) && (e->modifiers() & Qt::ControlModifier))
     {
-        setPlainText(d->moveStackPointerTowardsOlder());
+        QString prevcommand = d->history.previousCommand();
+        if(prevcommand != "") setPlainText(prevcommand);
         e->accept();
         return;
     }
     if((e->key() == Qt::Key_Down) && (e->modifiers() & Qt::ControlModifier))
     {
-        setPlainText(d->moveStackPointerTowardsNewer());
+        setPlainText(d->history.nextCommand());
         e->accept();
         return;
     }
 
     //Then the user is probably typing something...
     //Let's remember that for the history.
-    d->historycurrenttext = toPlainText();
+    d->history.setCurrentText(this->toPlainText());
 
     QPlainTextEdit::keyPressEvent(e);
 }
