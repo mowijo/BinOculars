@@ -23,6 +23,7 @@ endif(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 ADD_SUBDIRECTORY(../lib/sqlhighlighter/src sqlhighlighter)
 
 SET( SOURCES
+        CommandHistory.cpp
         DatabaseSelector.cpp
         Field.cpp
         QueryResultModel.cpp

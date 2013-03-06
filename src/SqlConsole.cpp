@@ -2,95 +2,8 @@
 #include <sqlhighlighter/src/SqlSyntaxhighLighter.h>
 #include <QDebug>
 #include <QKeySequence>
+#include "CommandHistory.h"
 
-
-class HistoryStack
-{
-private:
-    int pointer;
-    QStringList history;
-    QString currenttext;
-    int MAXSIZE;
-
-    void clear()
-    {
-        pointer = -1;
-        MAXSIZE = 5;
-        history.clear();
-        currenttext = "";
-    }
-
-public:
-    HistoryStack()
-    {
-        clear();
-    }
-
-    QString previousCommand()
-    {
-        int pointerbefore = pointer;
-        QString r;
-        if(pointer >= history.size())
-        {
-            pointer = history.size()-1;
-        }
-        if(pointer < 0)
-        {
-            r = "";
-        }
-        else
-        {
-            r = history.at(pointer);
-            pointer--;
-        }
-        qDebug() << "I return " << r << "Stack is " << history << "pointer was" << pointerbefore << "pointer is" << pointer;
-        return r;
-    }
-
-    QString nextCommand()
-    {
-        int pointerbefore = pointer;
-        QString r;
-        if(pointer < 0)
-        {
-            pointer = 1;
-        }
-        if(pointer >= history.size())
-        {
-            r = currenttext;
-        }
-        else
-        {
-            r = history.at(pointer);
-            pointer++;
-        }
-        qDebug() << "I return " << r << "Stack is " << history << "pointer was" << pointerbefore << "pointer is" << pointer;
-        return r;
-    }
-
-    void pushCommand(const QString &c)
-    {
-        history.push_back(c);
-        if(history.size() > MAXSIZE) history.takeFirst();
-        pointer++;
-        if(pointer >= MAXSIZE) pointer = MAXSIZE - 1;
-        qDebug() << "Push" << c << "Stack is " << history << "pointer is" << pointer;
-
-    }
-
-    void setCurrentText(const QString text)
-    {
-        currenttext = text;
-    }
-
-    void setHistory(QStringList h)
-    {
-        clear();
-        foreach(QString c, h) pushCommand(c);
-    }
-
-
-};
 
 class SqlConsolePrivate : public QObject
 {
@@ -102,7 +15,7 @@ private:
 public:
 
     SqlSyntaxhighLighter shl;
-    HistoryStack history;
+    CommandHistory history;
 
     SqlConsolePrivate(SqlConsole *parent) : QObject(parent)
     {
