@@ -39,10 +39,9 @@ SqlConsole::~SqlConsole()
 {
 }
 
-
-void SqlConsole::setHistory(const QStringList &history)
+CommandHistory * const SqlConsole::history() const
 {
-    d->history.setHistory(history);
+    return &d->history;
 }
 
 void SqlConsole::keyPressEvent(QKeyEvent *e)

@@ -9,7 +9,7 @@ class SqlConsole : public QPlainTextEdit
 public:
     explicit SqlConsole(QWidget *parent = 0);
     ~SqlConsole();
-    void setHistory(const QStringList &history);
+    class CommandHistory * const history() const;
 
 signals:
     void triggered(const QString &query);

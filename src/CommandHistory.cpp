@@ -2,80 +2,111 @@
 
 #include <QDebug>
 
-void CommandHistory::clear()
+class CommandHistoryPrivate
 {
-    pointer = -1;
-    MAXSIZE = 5;
-    history.clear();
-    currenttext = "";
-}
+
+public:
+
+    int pointer;
+    QStringList history;
+    QString currenttext;
+    int MAXSIZE;
+
+    void clear()
+    {
+        pointer = -1;
+        MAXSIZE = 5;
+        history.clear();
+        currenttext = "";
+    }
+
+
+};
+
+
 
 
 CommandHistory::CommandHistory()
 {
-    clear();
+    d = new CommandHistoryPrivate;
+    d->clear();
+}
+
+CommandHistory::~CommandHistory()
+{
+    delete d;
 }
 
 QString CommandHistory::previousCommand()
 {
-    int pointerbefore = pointer;
+    int pointerbefore = d->pointer;
     QString r;
-    if(pointer >= history.size())
+    if(d->pointer >= d->history.size())
     {
-        pointer = history.size()-1;
+        d->pointer = d->history.size()-1;
     }
-    if(pointer < 0)
+    if(d->pointer < 0)
     {
         r = "";
     }
     else
     {
-        r = history.at(pointer);
-        pointer--;
+        r = d->history.at(d->pointer);
+        d->pointer--;
     }
-    qDebug() << "I return " << r << "Stack is " << history << "pointer was" << pointerbefore << "pointer is" << pointer;
+    //qDebug() << "I return " << r << "Stack is " << d->history << "pointer was" << pointerbefore << "pointer is" << d->pointer;
     return r;
 }
 
 QString CommandHistory::nextCommand()
 {
-    int pointerbefore = pointer;
+    int pointerbefore = d->pointer;
     QString r;
-    if(pointer < 0)
+    if(d->pointer < 0)
     {
-        pointer = 1;
+        d->pointer = 1;
     }
-    if(pointer >= history.size())
+    if(d->pointer >= d->history.size())
     {
-        r = currenttext;
+        r = d->currenttext;
     }
     else
     {
-        r = history.at(pointer);
-        pointer++;
+        r = d->history.at(d->pointer);
+        d->pointer++;
     }
-    qDebug() << "I return " << r << "Stack is " << history << "pointer was" << pointerbefore << "pointer is" << pointer;
+    //qDebug() << "I return " << r << "Stack is " << d->history << "pointer was" << pointerbefore << "pointer is" << d->pointer;
     return r;
 }
 
+
+/**
+@note Will not push empty strings or strings consisting of white spaces only.
+@note Will not push a command if it is equal to the command on the top of the stack.
+*/
 void CommandHistory::pushCommand(const QString &c)
 {
-    history.push_back(c);
-    if(history.size() > MAXSIZE) history.takeFirst();
-    pointer++;
-    if(pointer >= MAXSIZE) pointer = MAXSIZE - 1;
-    qDebug() << "Push" << c << "Stack is " << history << "pointer is" << pointer;
+    if(c.trimmed() == "") return;
+    if(d->history.size() > 0)
+    {
+        if(c == d->history.last()) return;
+    }
+    d->history.push_back(c);
+    if(d->history.size() > d->MAXSIZE) d->history.takeFirst();
+    d->pointer++;
+    if(d->pointer >= d->MAXSIZE) d->pointer = d->MAXSIZE - 1;
+    //qDebug() << "Push" << c << "Stack is " << d->history << "pointer is" << d->pointer;
 
 }
 
 void CommandHistory::setCurrentText(const QString text)
 {
-    currenttext = text;
+    d->currenttext = text;
 }
 
 void CommandHistory::setHistory(QStringList h)
 {
-    clear();
+    d->clear();
     foreach(QString c, h) pushCommand(c);
 }
 

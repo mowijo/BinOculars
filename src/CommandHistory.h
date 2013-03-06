@@ -7,22 +7,18 @@
 
 class CommandHistory
 {
-private:
-    int pointer;
-    QStringList history;
-    QString currenttext;
-    int MAXSIZE;
-
-    void clear();
 
 public:
     CommandHistory();
+    ~CommandHistory();
     QString previousCommand();
     QString nextCommand();
     void pushCommand(const QString &c);
     void setCurrentText(const QString text);
     void setHistory(QStringList h);
 
+private:
+    class CommandHistoryPrivate *d;
 
 };
 
