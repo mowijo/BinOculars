@@ -16,6 +16,7 @@ public:
     void pushCommand(const QString &c);
     void setCurrentText(const QString text);
     void setHistory(QStringList h);
+    QStringList history() const;
 
 private:
     class CommandHistoryPrivate *d;

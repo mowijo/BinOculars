@@ -68,3 +68,23 @@ QString Settings::lastOpenBrowserDirectory() const
 {
     return value("LastOpendFileDir", "").toString();
 }
+
+QStringList Settings::commandHistoryFor(const QString &filename)
+{
+    QStringList history;
+    beginGroup("CommandHistories");
+    if(contains(filename))
+    {
+        QVariant v = value(filename, QStringList());
+        if(v.canConvert(QVariant::StringList)) history = v.toStringList();
+    }
+    endGroup();
+    return history;
+}
+
+void Settings::setCommandHistoryFor(const QString &filename, const QStringList &history)
+{
+    beginGroup("CommandHistories");
+    setValue(filename, history);
+    endGroup();
+}

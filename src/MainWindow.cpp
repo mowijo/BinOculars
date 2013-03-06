@@ -46,6 +46,7 @@ public:
         mainwindow = parent;
         ui = 0;
         currentresult = 0;
+        currentdatabase = 0;
     }
 
     ~MainWindowPrivate()
@@ -168,9 +169,15 @@ public slots:
 
     void setCurrentDb(DataBase *newdb)
     {
+
         if(databases.indexOf(newdb) < 0)
         {
             addDatabase(newdb);
+        }
+        if(currentdatabase)
+        {
+            if(currentdatabase == newdb) return;
+            s.setCommandHistoryFor(currentdatabase->currentFileName(), sqlconsole->history()->history());
         }
         currentdatabase = newdb;
         if(!dsm)
@@ -182,7 +189,7 @@ public slots:
         emit mainwindow->currentDatabaseChanged(currentdatabase);
         mainwindow->setWindowTitle(QCoreApplication::applicationName()+" ["+currentdatabase->currentFileName()+"]");
         enableGuiForDatabase();
-        sqlconsole->history()->setHistory(QStringList() << "Abe" << "Banan" << "Citron");
+        sqlconsole->history()->setHistory(s.commandHistoryFor(newdb->currentFileName()));
     }
 
 

@@ -17,6 +17,10 @@ public:
     void setLastOpenBrowserDirectory(const QString &dir);
     QString lastOpenBrowserDirectory() const;
 
+
+    QStringList commandHistoryFor(const QString &filename);
+    void setCommandHistoryFor(const QString &filename, const QStringList &history);
+
 private:
     Settings(const Settings &other);
     Settings& operator==(const Settings &other);

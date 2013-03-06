@@ -110,3 +110,8 @@ void CommandHistory::setHistory(QStringList h)
     foreach(QString c, h) pushCommand(c);
 }
 
+QStringList CommandHistory::history() const
+{
+    return d->history;
+}
+
