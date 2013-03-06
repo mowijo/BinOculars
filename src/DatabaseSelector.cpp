@@ -26,6 +26,8 @@ public:
 
     void handleKeyRelease(QKeyEvent *ke)
     {
+
+        if(!owner->isVisible()) return;
         if(ke->key() == Qt::Key_Control)
         {
             owner->hide();

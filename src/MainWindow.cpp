@@ -1,23 +1,25 @@
+#include "CommandHistory.h"
+#include "DataBase.h"
+#include "DatabaseSelector.h"
+#include "DatabaseStructureModel.h"
 #include "MainWindow.h"
-#include "ui_MainWindow.h"
+#include "QueryResultModel.h"
 #include "QuickOpenDialog.h"
 #include "Settings.h"
-#include "DataBase.h"
-#include "DatabaseStructureModel.h"
 #include "SqlConsole.h"
+#include "ui_MainWindow.h"
+
 #include <QAction>
-#include <QTableView>
 #include <QDebug>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QSet>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlResult>
-#include "QueryResultModel.h"
-#include <QSet>
-#include <QFileDialog>
-#include <QMessageBox>
-#include "DatabaseSelector.h"
+#include <QTableView>
 
 class MainWindowPrivate : public QObject
 {
@@ -180,6 +182,7 @@ public slots:
         emit mainwindow->currentDatabaseChanged(currentdatabase);
         mainwindow->setWindowTitle(QCoreApplication::applicationName()+" ["+currentdatabase->currentFileName()+"]");
         enableGuiForDatabase();
+        sqlconsole->history()->setHistory(QStringList() << "Abe" << "Banan" << "Citron");
     }
 
 
@@ -216,6 +219,7 @@ public slots:
 
     void setCurrentDb(int index)
     {
+        qDebug() << "I set current db...";
         if(index < 0) return;
         if(index > databases.length()-1) return;
         setCurrentDb(databases[index]);
