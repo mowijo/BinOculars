@@ -29,6 +29,7 @@ SET( SOURCES
         QueryResultModel.cpp
         QuickOpenDialog.cpp
         RememberDialog.cpp
+        LogDelegate.cpp
         LogModel.cpp
         LogModelFilter.cpp
         DataBase.cpp

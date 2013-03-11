@@ -10,6 +10,7 @@
 #include "ui_MainWindow.h"
 #include "LogModel.h"
 #include "LogModelFilter.h"
+#include "LogDelegate.h"
 
 #include <QAction>
 #include <QDebug>
@@ -83,6 +84,7 @@ public:
         logfilter.setLogModel(&log);
         ui->logview->setModel(&logfilter);
         ui->logview->hideColumn(1);
+//        ui->logview->setItemDelegateForColumn(0, new LogDelegate(&log, &logfilter));
 
 
         // connect actions

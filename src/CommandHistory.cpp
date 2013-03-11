@@ -39,7 +39,6 @@ CommandHistory::~CommandHistory()
 
 QString CommandHistory::previousCommand()
 {
-    int pointerbefore = d->pointer;
     QString r;
     if(d->pointer >= d->history.size())
     {
@@ -60,7 +59,7 @@ QString CommandHistory::previousCommand()
 
 QString CommandHistory::nextCommand()
 {
-    int pointerbefore = d->pointer;
+
     QString r;
     if(d->pointer < 0)
     {
