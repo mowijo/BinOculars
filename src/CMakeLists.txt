@@ -31,7 +31,7 @@ SET( SOURCES
         RememberDialog.cpp
         LogDelegate.cpp
         Log.cpp
-        LogModelFilter.cpp
+        LogFilter.cpp
         DataBase.cpp
         DatabaseStructureModel.cpp
         main.cpp

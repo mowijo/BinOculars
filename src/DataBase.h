@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QList>
-#include <LogModelFilter.h>
+#include "LogFilter.h"
 
 
 

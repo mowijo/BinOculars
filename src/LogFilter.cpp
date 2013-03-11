@@ -1,4 +1,4 @@
-#include "LogModelFilter.h"
+#include "LogFilter.h"
 #include "Log.h"
 #include <QDebug>
 

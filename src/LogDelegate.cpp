@@ -1,6 +1,6 @@
 #include "LogDelegate.h"
 #include "Log.h"
-#include "LogModelFilter.h"
+#include "LogFilter.h"
 #include <QFont>
 #include <QApplication>
 

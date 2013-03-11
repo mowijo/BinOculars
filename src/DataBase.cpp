@@ -3,7 +3,7 @@
 #include <QtSql>
 #include "Table.h"
 #include "Log.h"
-#include "LogModelFilter.h"
+#include "LogFilter.h"
 
 class DataBasePrivate : public QObject
 {

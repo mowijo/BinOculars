@@ -9,7 +9,7 @@
 #include "SqlConsole.h"
 #include "ui_MainWindow.h"
 #include "Log.h"
-#include "LogModelFilter.h"
+#include "LogFilter.h"
 #include "LogDelegate.h"
 
 #include <QAction>
