@@ -2,6 +2,7 @@
 #define LOGMODELFILTER_H
 
 #include <QSortFilterProxyModel>
+#include <QSqlQuery>
 
 class LogModelFilter : public QSortFilterProxyModel
 {
@@ -14,6 +15,7 @@ public:
 
 protected:
     bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;
+    void addEntry(const QSqlQuery &query);
 
 private:
     class LogModelFilterPrivate *d;

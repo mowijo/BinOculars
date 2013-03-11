@@ -3,9 +3,15 @@
 
 #include <QObject>
 #include <QList>
+#include <LogModelFilter.h>
+
+
 
 class Table;
 class QSqlDatabase;
+class LogModelFilter;
+class LogModel;
+
 class DataBase : public QObject
 {
     Q_OBJECT
@@ -19,6 +25,9 @@ public:
     QString lastError() const;
     QList<Table*> tables();
     QSqlDatabase * connection() const;
+
+    LogModelFilter* filteredLog() const;
+    LogModel* log() const;
     
 signals:
     

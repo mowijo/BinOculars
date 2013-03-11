@@ -40,8 +40,6 @@ public:
     SqlConsole *sqlconsole;
     DatabaseSelector *databaseselector;
     QSqlDatabase qdb;
-    LogModel log;
-    LogModelFilter logfilter;
     QTableView resultview;
     QueryResultModel *currentresult;
 
@@ -80,12 +78,7 @@ public:
 
         QHBoxLayout *hbl = new QHBoxLayout;
         hbl->addWidget(&resultview);
-        ui->queryresults->setLayout(hbl);
-        logfilter.setLogModel(&log);
-        ui->logview->setModel(&logfilter);
-        ui->logview->hideColumn(1);
-        ui->logview->setItemDelegateForColumn(0, new LogDelegate(&log, &logfilter));
-
+        ui->queryresults->setLayout(hbl);        
 
         // connect actions
         connect(ui->action_Open_database, SIGNAL(triggered()), this, SLOT(selectFileToOpen()));
@@ -197,6 +190,10 @@ public slots:
         mainwindow->setWindowTitle(QCoreApplication::applicationName()+" ["+currentdatabase->currentFileName()+"]");
         enableGuiForDatabase();
         sqlconsole->history()->setHistory(s.commandHistoryFor(newdb->currentFileName()));
+
+        ui->logview->setModel(newdb->filteredLog());
+        ui->logview->setItemDelegateForColumn(0, new LogDelegate(newdb->log(), newdb->filteredLog()));
+        ui->logview->hideColumn(1);
     }
 
 
@@ -301,9 +298,7 @@ public slots:
     {
 
         QSqlQuery q = currentdatabase->connection()->exec(query);
-
-        log.addEntry(q);
-        logfilter.invalidate();
+        currentdatabase->log()->addEntry(query);
 
         if(q.lastError().type() != QSqlError::NoError)
         {

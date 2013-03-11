@@ -110,6 +110,7 @@ void LogModel::addEntry(const QSqlQuery &query)
     beginInsertRows(QModelIndex(), d->queries.size(), d->queries.size()+1);
     d->queries << query;
     endInsertRows();
+    emit entryAdded(query);
 }
 
 

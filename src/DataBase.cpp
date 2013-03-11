@@ -2,6 +2,8 @@
 #include <QFile>
 #include <QtSql>
 #include "Table.h"
+#include "LogModel.h"
+#include "LogModelFilter.h"
 
 class DataBasePrivate : public QObject
 {
@@ -15,10 +17,13 @@ public:
     QString error;
     QSqlDatabase connection;
     QList<Table*> tables;
+    LogModel log;
+    LogModelFilter logfilter;
 
     DataBasePrivate(DataBase *db) : QObject(db)
     {
         p = db;
+        logfilter.setLogModel(&log);
     }
 
     bool load(const QString &filename)
@@ -132,6 +137,11 @@ QSqlDatabase * DataBase::connection() const
     return &d->connection;
 }
 
+LogModelFilter *DataBase::filteredLog() const
+{
+    return &d->logfilter;
+}
+
 bool DataBase::save(const QString &filename)
 {
     if(filename == "") return d->save(d->filename);
@@ -141,4 +151,9 @@ bool DataBase::save(const QString &filename)
 QString DataBase::currentFileName() const
 {
     return d->filename;
+}
+
+LogModel *DataBase::log() const
+{
+    return &d->log;
 }

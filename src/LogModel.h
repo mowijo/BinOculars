@@ -18,6 +18,9 @@ public:
     bool wasSuccessfull(int row) const;
     bool isRowForErrorStatus(int row) const;
 
+signals:
+    void entryAdded(const QSqlQuery &query);
+
 public slots:
     void addEntry(const QSqlQuery &query);
 

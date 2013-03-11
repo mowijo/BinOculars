@@ -21,22 +21,30 @@ void LogModelFilter::setLogModel(LogModel *model)
 {
     d->logmodel = model;
     setSourceModel(model);
+    connect(model, SIGNAL(entryAdded(QSqlQuery)), this, SLOT(invalidate()));
 }
 
 bool LogModelFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
+
+    Q_UNUSED(source_parent);
+
     if(d->logmodel->isRowForErrorStatus(source_row))
     {
         if(d->logmodel->wasSuccessfull(source_row))
         {
-            qDebug() << "Was successfill"<<source_row<<"returned true";
             return false;
         }
         else
         {
-            qDebug() << "Was successfill"<<source_row<<"returned false";
             return true;
         }
     }
     return true;
+}
+
+void LogModelFilter::addEntry(const QSqlQuery &query)
+{
+    d->logmodel->addEntry(query);
+    invalidate();
 }
