@@ -84,7 +84,7 @@ public:
         logfilter.setLogModel(&log);
         ui->logview->setModel(&logfilter);
         ui->logview->hideColumn(1);
-//        ui->logview->setItemDelegateForColumn(0, new LogDelegate(&log, &logfilter));
+        ui->logview->setItemDelegateForColumn(0, new LogDelegate(&log, &logfilter));
 
 
         // connect actions

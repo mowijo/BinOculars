@@ -8,6 +8,7 @@ class LogDelegate : public QStyledItemDelegate
     Q_OBJECT
 public:
     explicit LogDelegate(class LogModel *soruce, class LogModelFilter *proxy);
+    ~LogDelegate();
     void paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 
     QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
