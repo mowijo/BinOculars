@@ -77,7 +77,7 @@ DatabaseSelector::DatabaseSelector(QWidget *root)
     : QListWidget(root)
 {
     d = new DatabaseSelectorPrivate(this);
-
+    setHidden(true);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setWindowFlags( Qt::FramelessWindowHint  );
