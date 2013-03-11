@@ -42,6 +42,7 @@ public:
     QSqlDatabase qdb;
     QTableView resultview;
     QueryResultModel *currentresult;
+    LogDelegate *logdelegate;
 
     MainWindowPrivate(MainWindow *parent) : QObject(parent)
     {
@@ -49,11 +50,13 @@ public:
         ui = 0;
         currentresult = 0;
         currentdatabase = 0;
+        logdelegate = 0;
     }
 
     ~MainWindowPrivate()
     {
         if(currentresult) delete currentresult;
+        if(logdelegate) delete logdelegate;
         if(ui) delete ui;
     }
 
@@ -192,7 +195,16 @@ public slots:
         sqlconsole->history()->setHistory(s.commandHistoryFor(newdb->currentFileName()));
 
         ui->logview->setModel(newdb->filteredLog());
-        ui->logview->setItemDelegateForColumn(0, new LogDelegate(newdb->log(), newdb->filteredLog()));
+        if(!logdelegate)
+        {
+            logdelegate = new LogDelegate(newdb->log(), newdb->filteredLog());
+        }
+        else
+        {
+            logdelegate->setLog(newdb->log());
+            logdelegate->setLogFilter(newdb->filteredLog());
+        }
+        ui->logview->setItemDelegateForColumn(0, logdelegate);
         ui->logview->hideColumn(1);
     }
 

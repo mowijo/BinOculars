@@ -54,6 +54,8 @@ QuickOpenDialog::QuickOpenDialog(QWidget *parent) :
 
     connect(d->ui->list, SIGNAL(activated(QModelIndex)), this, SLOT(accept()));
     connect(d->ui->list, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+    d->ui->list->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    d->ui->list->setTextElideMode(Qt::ElideMiddle);
 
 }
 

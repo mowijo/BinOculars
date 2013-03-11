@@ -94,3 +94,13 @@ QSize LogDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelInde
 {
     return QSize(150, d->fontmetrics->height()*1.25);
 }
+
+void LogDelegate::setLog(Log *soruce)
+{
+    d->soruce = soruce;
+}
+
+void LogDelegate::setLogFilter(FilteredLog *proxy)
+{
+    d->proxy = proxy;
+}

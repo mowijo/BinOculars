@@ -78,9 +78,12 @@ DatabaseSelector::DatabaseSelector(QWidget *root)
 {
     d = new DatabaseSelectorPrivate(this);
 
-    hide();
+
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setWindowFlags( Qt::FramelessWindowHint  );
-    resize(300,400);
+    resize(300,300);
+    setTextElideMode(Qt::ElideMiddle);
+
     setSelectionMode(QAbstractItemView::SingleSelection);
     setCurrentRow(0);
 
@@ -92,6 +95,7 @@ DatabaseSelector::DatabaseSelector(QWidget *root)
         if(w == this) continue;
         w->installEventFilter(this);
     }
+
 }
 
 
@@ -106,6 +110,7 @@ void DatabaseSelector::setDatabaseList(const QStringList& list)
 {
     clear();
     addItems(list);
+    setTextElideMode(Qt::ElideMiddle);
 }
 
 bool DatabaseSelector::eventFilter(QObject *obj, QEvent *event)
