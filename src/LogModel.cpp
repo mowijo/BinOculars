@@ -93,6 +93,7 @@ QModelIndex LogModel::parent(const QModelIndex &index) const
 
 int LogModel::rowCount(const QModelIndex &parent) const
 {
+    if(parent.isValid()) return 0;
     return d->queries.count() * 2;
 }
 
