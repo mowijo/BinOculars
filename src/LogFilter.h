@@ -1,5 +1,5 @@
-#ifndef LOGMODELFILTER_H
-#define LOGMODELFILTER_H
+#ifndef LOGFILTER_H
+#define LOGFILTER_H
 
 #include <QSortFilterProxyModel>
 #include <QSqlQuery>
@@ -21,4 +21,4 @@ private:
     class FilteredLogPrivate *d;
 };
 
-#endif // LOGMODELFILTER_H
+#endif // LOGFILTER_H

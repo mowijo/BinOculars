@@ -1,5 +1,5 @@
-#ifndef LOGMODEL_H
-#define LOGMODEL_H
+#ifndef LOG_H
+#define LOG_H
 
 #include <QAbstractItemModel>
 #include <QSqlQuery>
@@ -30,4 +30,4 @@ private:
    friend class LogPrivate;
 };
 
-#endif // LOGMODEL_H
+#endif // LOG_H
