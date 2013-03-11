@@ -24,7 +24,7 @@ public:
     bool save(const QString &filename = "");
     QString lastError() const;
     QList<Table*> tables();
-    QSqlDatabase * connection() const;
+    QSqlQuery exec(const QString &query);
 
     LogModelFilter* filteredLog() const;
     LogModel* log() const;

@@ -297,8 +297,7 @@ public slots:
     void performQueryOnActiveDatabase(const QString query)
     {
 
-        QSqlQuery q = currentdatabase->connection()->exec(query);
-        currentdatabase->log()->addEntry(query);
+        QSqlQuery q = currentdatabase->exec(query);
 
         if(q.lastError().type() != QSqlError::NoError)
         {

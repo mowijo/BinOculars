@@ -132,9 +132,11 @@ QList<Table *> DataBase::tables()
     return d->tables;
 }
 
-QSqlDatabase * DataBase::connection() const
+QSqlQuery DataBase::exec(const QString &query)
 {
-    return &d->connection;
+    QSqlQuery q = d->connection.exec(query);
+    d->log.addEntry(q);
+    return q;
 }
 
 LogModelFilter *DataBase::filteredLog() const
