@@ -47,14 +47,21 @@ LogDelegate::~LogDelegate()
 
 void LogDelegate::paint(QPainter *p, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+
     QModelIndex sourceindex = d->proxy->mapToSource(index);
     QString text = d->soruce->data(sourceindex, Qt::DisplayRole).toString();
-    p->setPen(Qt::black);
+    p->setFont(d->font);
+
+    if(option.state & QStyle::State_Selected)
+    {
+        p->fillRect(option.rect, option.palette.highlight());
+    }
+
     if(d->soruce->isRowForErrorStatus(sourceindex.row()))
     {
         if(!d->soruce->wasSuccessfull(sourceindex.row()))
         {
-            text = "!! " + text;
+            text = ">> " + text;
         }
     }
 
@@ -64,10 +71,17 @@ void LogDelegate::paint(QPainter *p, const QStyleOptionViewItem &option, const Q
     }
     else
     {
-        p->setPen(QColor(128,0,0));
+        if(option.state & QStyle::State_Selected)
+        {
+            p->setPen(QColor(255,0,0));
+        }
+        else
+        {
+            p->setPen(QColor(128,0,0));
+        }
+
     }
 
-    p->setFont(d->font);
 
     p->drawText(
                 option.rect.left(),
