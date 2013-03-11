@@ -62,7 +62,7 @@ public:
                     owner->setFocus();
                     QPoint pos((root->width() - owner->width())/2,
                                (root->height() - owner->height())/2);
-                    owner->move(root->mapToParent(pos));
+                    owner->move(owner->mapFromParent(pos));
                 }
                 ke->ignore();
             }

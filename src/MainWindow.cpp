@@ -8,6 +8,8 @@
 #include "Settings.h"
 #include "SqlConsole.h"
 #include "ui_MainWindow.h"
+#include "LogModel.h"
+#include "LogModelFilter.h"
 
 #include <QAction>
 #include <QDebug>
@@ -37,7 +39,8 @@ public:
     SqlConsole *sqlconsole;
     DatabaseSelector *databaseselector;
     QSqlDatabase qdb;
-
+    LogModel log;
+    LogModelFilter logfilter;
     QTableView resultview;
     QueryResultModel *currentresult;
 
@@ -77,7 +80,9 @@ public:
         QHBoxLayout *hbl = new QHBoxLayout;
         hbl->addWidget(&resultview);
         ui->queryresults->setLayout(hbl);
-
+        logfilter.setLogModel(&log);
+        ui->logview->setModel(&logfilter);
+        ui->logview->hideColumn(1);
 
 
         // connect actions
@@ -292,17 +297,21 @@ public slots:
 
     void performQueryOnActiveDatabase(const QString query)
     {
-        if(currentresult) delete currentresult;
 
         QSqlQuery q = currentdatabase->connection()->exec(query);
 
+        log.addEntry(q);
+        logfilter.invalidate();
 
         if(q.lastError().type() != QSqlError::NoError)
         {
-            qDebug() << q.lastError().text();
             return;
         }
 
+        if(currentresult)
+        {
+            delete currentresult;
+        }
         currentresult = new QueryResultModel(q);
         resultview.setModel(currentresult);
         ui->actionSpawn_Result->setEnabled(true);
