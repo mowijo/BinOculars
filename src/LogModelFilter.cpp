@@ -1,5 +1,5 @@
 #include "LogModelFilter.h"
-#include "LogModel.h"
+#include "Log.h"
 #include <QDebug>
 
 class FilteredLogPrivate

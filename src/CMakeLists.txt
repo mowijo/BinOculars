@@ -30,7 +30,7 @@ SET( SOURCES
         QuickOpenDialog.cpp
         RememberDialog.cpp
         LogDelegate.cpp
-        LogModel.cpp
+        Log.cpp
         LogModelFilter.cpp
         DataBase.cpp
         DatabaseStructureModel.cpp

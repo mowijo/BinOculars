@@ -2,7 +2,7 @@
 #include <QFile>
 #include <QtSql>
 #include "Table.h"
-#include "LogModel.h"
+#include "Log.h"
 #include "LogModelFilter.h"
 
 class DataBasePrivate : public QObject

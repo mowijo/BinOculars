@@ -8,7 +8,7 @@
 #include "Settings.h"
 #include "SqlConsole.h"
 #include "ui_MainWindow.h"
-#include "LogModel.h"
+#include "Log.h"
 #include "LogModelFilter.h"
 #include "LogDelegate.h"
 

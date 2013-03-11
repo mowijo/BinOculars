@@ -1,4 +1,4 @@
-#include "LogModel.h"
+#include "Log.h"
 #include <QSqlError>
 #include <QColor>
 #include <math.h>
@@ -23,7 +23,7 @@ public:
 
 };
 
-#include "LogModel.moc"
+#include "Log.moc"
 
 Log::Log(QObject *parent) :
     QAbstractItemModel(parent)
