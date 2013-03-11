@@ -26,8 +26,8 @@ public slots:
 
 
 private:
-   class LogModelPrivate *d;
-   friend class LogModelPrivate;
+   class LogPrivate *d;
+   friend class LogPrivate;
 };
 
 #endif // LOGMODEL_H

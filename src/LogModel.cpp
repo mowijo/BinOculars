@@ -2,7 +2,8 @@
 #include <QSqlError>
 #include <QColor>
 #include <math.h>
-class LogModelPrivate : QObject
+
+class LogPrivate : QObject
 {
 
     Q_OBJECT
@@ -14,7 +15,7 @@ public:
 
     QList<QSqlQuery> queries;
 
-    LogModelPrivate(Log *p) : QObject(p)
+    LogPrivate(Log *p) : QObject(p)
     {
         logmodel = p;
     }
@@ -27,7 +28,7 @@ public:
 Log::Log(QObject *parent) :
     QAbstractItemModel(parent)
 {
-    d = new LogModelPrivate(this);
+    d = new LogPrivate(this);
 }
 
 QModelIndex Log::index(int row, int column, const QModelIndex &parent) const

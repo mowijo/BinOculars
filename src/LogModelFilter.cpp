@@ -1,7 +1,8 @@
 #include "LogModelFilter.h"
 #include "LogModel.h"
 #include <QDebug>
-class LogModelFilterPrivate
+
+class FilteredLogPrivate
 {
 public:
     Log *logmodel;
@@ -9,7 +10,7 @@ public:
 
 FilteredLog::FilteredLog()
 {
-    d = new class LogModelFilterPrivate;
+    d = new class FilteredLogPrivate;
 }
 
 FilteredLog::~FilteredLog()

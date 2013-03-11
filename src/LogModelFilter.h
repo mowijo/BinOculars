@@ -18,7 +18,7 @@ protected:
     void addEntry(const QSqlQuery &query);
 
 private:
-    class LogModelFilterPrivate *d;
+    class FilteredLogPrivate *d;
 };
 
 #endif // LOGMODELFILTER_H
