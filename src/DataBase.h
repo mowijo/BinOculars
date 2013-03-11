@@ -9,8 +9,8 @@
 
 class Table;
 class QSqlDatabase;
-class LogModelFilter;
-class LogModel;
+class FilteredLog;
+class Log;
 
 class DataBase : public QObject
 {
@@ -26,13 +26,9 @@ public:
     QList<Table*> tables();
     QSqlQuery exec(const QString &query);
 
-    LogModelFilter* filteredLog() const;
-    LogModel* log() const;
+    FilteredLog* filteredLog() const;
+    Log* log() const;
     
-signals:
-    
-public slots:
-
 private:
     DataBase(const DataBase &other);
     DataBase& operator==(const DataBase &other);

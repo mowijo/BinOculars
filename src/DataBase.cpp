@@ -17,8 +17,8 @@ public:
     QString error;
     QSqlDatabase connection;
     QList<Table*> tables;
-    LogModel log;
-    LogModelFilter logfilter;
+    Log log;
+    FilteredLog logfilter;
 
     DataBasePrivate(DataBase *db) : QObject(db)
     {
@@ -139,7 +139,7 @@ QSqlQuery DataBase::exec(const QString &query)
     return q;
 }
 
-LogModelFilter *DataBase::filteredLog() const
+FilteredLog *DataBase::filteredLog() const
 {
     return &d->logfilter;
 }
@@ -155,7 +155,7 @@ QString DataBase::currentFileName() const
     return d->filename;
 }
 
-LogModel *DataBase::log() const
+Log *DataBase::log() const
 {
     return &d->log;
 }

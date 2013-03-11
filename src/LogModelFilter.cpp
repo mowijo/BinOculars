@@ -4,27 +4,27 @@
 class LogModelFilterPrivate
 {
 public:
-    LogModel *logmodel;
+    Log *logmodel;
 };
 
-LogModelFilter::LogModelFilter()
+FilteredLog::FilteredLog()
 {
     d = new class LogModelFilterPrivate;
 }
 
-LogModelFilter::~LogModelFilter()
+FilteredLog::~FilteredLog()
 {
     delete d;
 }
 
-void LogModelFilter::setLogModel(LogModel *model)
+void FilteredLog::setLogModel(Log *model)
 {
     d->logmodel = model;
     setSourceModel(model);
     connect(model, SIGNAL(entryAdded(QSqlQuery)), this, SLOT(invalidate()));
 }
 
-bool LogModelFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool FilteredLog::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
 
     Q_UNUSED(source_parent);
@@ -43,7 +43,7 @@ bool LogModelFilter::filterAcceptsRow(int source_row, const QModelIndex &source_
     return true;
 }
 
-void LogModelFilter::addEntry(const QSqlQuery &query)
+void FilteredLog::addEntry(const QSqlQuery &query)
 {
     d->logmodel->addEntry(query);
     invalidate();

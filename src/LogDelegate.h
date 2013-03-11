@@ -7,7 +7,7 @@ class LogDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit LogDelegate(class LogModel *soruce, class LogModelFilter *proxy);
+    explicit LogDelegate(class Log*soruce, class FilteredLog *proxy);
     ~LogDelegate();
     void paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 

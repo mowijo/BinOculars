@@ -8,13 +8,13 @@ class LogModelPrivate : QObject
     Q_OBJECT
 
 private:
-    LogModel *logmodel;
+    Log *logmodel;
 
 public:
 
     QList<QSqlQuery> queries;
 
-    LogModelPrivate(LogModel *p) : QObject(p)
+    LogModelPrivate(Log *p) : QObject(p)
     {
         logmodel = p;
     }
@@ -24,18 +24,18 @@ public:
 
 #include "LogModel.moc"
 
-LogModel::LogModel(QObject *parent) :
+Log::Log(QObject *parent) :
     QAbstractItemModel(parent)
 {
     d = new LogModelPrivate(this);
 }
 
-QModelIndex LogModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex Log::index(int row, int column, const QModelIndex &parent) const
 {
     return createIndex(row, column);
 }
 
-QVariant LogModel::data(const QModelIndex &index, int role) const
+QVariant Log::data(const QModelIndex &index, int role) const
 {
     if(index.row() < 0) return QVariant();
     if(index.row() >= rowCount()) return QVariant();
@@ -81,23 +81,23 @@ QVariant LogModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-int LogModel::columnCount(const QModelIndex &parent) const
+int Log::columnCount(const QModelIndex &parent) const
 {
     return 2;
 }
 
-QModelIndex LogModel::parent(const QModelIndex &index) const
+QModelIndex Log::parent(const QModelIndex &index) const
 {
     return QModelIndex();
 }
 
-int LogModel::rowCount(const QModelIndex &parent) const
+int Log::rowCount(const QModelIndex &parent) const
 {
     if(parent.isValid()) return 0;
     return d->queries.count() * 2;
 }
 
-bool LogModel::wasSuccessfull(int row) const
+bool Log::wasSuccessfull(int row) const
 {
     int queryidx = floor(row / 2);
     QSqlQuery q = d->queries[queryidx];
@@ -105,7 +105,7 @@ bool LogModel::wasSuccessfull(int row) const
 
 }
 
-void LogModel::addEntry(const QSqlQuery &query)
+void Log::addEntry(const QSqlQuery &query)
 {
     beginInsertRows(QModelIndex(), d->queries.size(), d->queries.size()+1);
     d->queries << query;
@@ -114,7 +114,7 @@ void LogModel::addEntry(const QSqlQuery &query)
 }
 
 
-bool LogModel::isRowForErrorStatus(int row) const
+bool Log::isRowForErrorStatus(int row) const
 {
     int queryidx = floor(row / 2);
     return (queryidx * 2) != row;

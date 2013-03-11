@@ -9,8 +9,8 @@
 class LogDelegatePrivate
 {
 public:
-    LogModel *soruce;
-    LogModelFilter *proxy;
+    Log *soruce;
+    FilteredLog *proxy;
     QFont font;
     QFontMetrics *fontmetrics;
 
@@ -28,7 +28,7 @@ public:
 };
 
 
-LogDelegate::LogDelegate(LogModel *soruce, LogModelFilter *proxy)
+LogDelegate::LogDelegate(Log *soruce, FilteredLog *proxy)
     : QStyledItemDelegate()
 {
     d = new LogDelegatePrivate();

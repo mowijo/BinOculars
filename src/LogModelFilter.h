@@ -4,14 +4,14 @@
 #include <QSortFilterProxyModel>
 #include <QSqlQuery>
 
-class LogModelFilter : public QSortFilterProxyModel
+class FilteredLog : public QSortFilterProxyModel
 {
 
 public:
-    LogModelFilter();
-    ~LogModelFilter();
+    FilteredLog();
+    ~FilteredLog();
 
-    void setLogModel(class LogModel *model) ;
+    void setLogModel(class Log *model) ;
 
 protected:
     bool filterAcceptsRow ( int source_row, const QModelIndex & source_parent ) const;

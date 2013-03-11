@@ -4,11 +4,11 @@
 #include <QAbstractItemModel>
 #include <QSqlQuery>
 
-class LogModel : public QAbstractItemModel
+class Log : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit LogModel(QObject *parent = 0);
+    explicit Log(QObject *parent = 0);
     
     QModelIndex	index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
     QVariant data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
