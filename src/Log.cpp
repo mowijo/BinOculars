@@ -60,6 +60,10 @@ QVariant Log::data(const QModelIndex &index, int role) const
         {
             return q.lastError().type() == QSqlError::NoError;
         }
+        else if(index.column() == 2)
+        {
+            return isRowForErrorStatus(index.row());
+        }
     }
     if(Qt::DecorationRole == role)
     {
@@ -84,7 +88,7 @@ QVariant Log::data(const QModelIndex &index, int role) const
 
 int Log::columnCount(const QModelIndex &parent) const
 {
-    return 2;
+    return 3;
 }
 
 QModelIndex Log::parent(const QModelIndex &index) const

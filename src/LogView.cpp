@@ -92,6 +92,29 @@ public slots:
             select_failed_lines_and_errormessages_action->setEnabled(false);
             return;
         }
+        select_all_lines_action->setEnabled(true);
+        int successfullrows = 0;
+        int failedrows = 0;
+        int messagerows = 0;
+        QAbstractItemModel *model = logview->model();
+        for(int row = 0; row < logview->model()->rowCount(); row++)
+        {
+            if(model->data(model->index(row, 2)).toBool())
+            {
+                messagerows++;
+            }
+            else if(model->data(model->index(row, 1)).toBool())
+            {
+                successfullrows++;
+            }
+            else
+            {
+                failedrows++;
+            }
+        }
+        select_successfull_lines_action->setEnabled(successfullrows > 0);
+        select_failed_lines_action->setEnabled(failedrows > 0);
+        select_failed_lines_and_errormessages_action->setEnabled(messagerows > 0);
     }
 
     void updateSelectionDependendActions()
@@ -127,12 +150,11 @@ public slots:
             lines << logview->model()->data(index).toString();
         }
         QApplication::clipboard()->setText(lines.join("\n"));
-        qDebug() << "Copies selected";
     }
 
     void selectAllEntries()
     {
-        qDebug() << "Selects all lines";
+        logview->selectAll();
     }
 
     void clearSelection()
@@ -144,17 +166,75 @@ public slots:
 
     void selectTheSuccessfullEntries()
     {
-        qDebug() << "Selects the successfull lines";
+        QAbstractItemModel *model = logview->model();
+        if(!model) return;
+        QItemSelectionModel *selectionmodel = logview->selectionModel();
+        if(!selectionmodel) return;
+        selectionmodel->clearSelection();
+        for(int row = 0; row < logview->model()->rowCount(); row++)
+        {
+            if(model->data(model->index(row, 2)).toBool())
+            {
+                //Error message entry
+            }
+            else if(model->data(model->index(row, 1)).toBool())
+            {
+                selectionmodel->select(model->index(row, 0), QItemSelectionModel::Select);
+            }
+            else
+            {
+                //Failed entry
+            }
+        }
+
     }
 
     void selectTheFailedEntries()
     {
-        qDebug() << "Selects the failed lines";
+        QAbstractItemModel *model = logview->model();
+        if(!model) return;
+        QItemSelectionModel *selectionmodel = logview->selectionModel();
+        if(!selectionmodel) return;
+        selectionmodel->clearSelection();
+        for(int row = 0; row < logview->model()->rowCount(); row++)
+        {
+            if(model->data(model->index(row, 2)).toBool())
+            {
+                //Error message entry
+            }
+            else if(model->data(model->index(row, 1)).toBool())
+            {
+                //Successfull entry
+            }
+            else
+            {
+                selectionmodel->select(model->index(row, 0), QItemSelectionModel::Select);
+            }
+        }
     }
 
     void selectTheFailedEntriesAndErrorMessages()
     {
-        qDebug() << "Selects the failed lines AND their errormessages";
+        QAbstractItemModel *model = logview->model();
+        if(!model) return;
+        QItemSelectionModel *selectionmodel = logview->selectionModel();
+        if(!selectionmodel) return;
+        selectionmodel->clearSelection();
+        for(int row = 0; row < logview->model()->rowCount(); row++)
+        {
+            if(model->data(model->index(row, 2)).toBool())
+            {
+                selectionmodel->select(model->index(row, 0), QItemSelectionModel::Select);
+            }
+            else if(model->data(model->index(row, 1)).toBool())
+            {
+                //Successfull entry
+            }
+            else
+            {
+                selectionmodel->select(model->index(row, 0), QItemSelectionModel::Select);
+            }
+        }
     }
 
 };

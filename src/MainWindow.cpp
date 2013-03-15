@@ -215,6 +215,7 @@ public slots:
         }
         logview->setItemDelegateForColumn(0, logdelegate);
         logview->hideColumn(1);
+        logview->hideColumn(2);
     }
 
 
