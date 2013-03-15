@@ -12,6 +12,7 @@ public:
     
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void contextMenuEvent(QContextMenuEvent *);
 
 private:
     class LogViewPrivate *d;
