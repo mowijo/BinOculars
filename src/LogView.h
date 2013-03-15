@@ -9,9 +9,12 @@ class LogView : public QTreeView
 public:
     explicit LogView(QWidget *parent = 0);
     ~LogView(   );
+
+public:
+    void setModel(QAbstractItemModel *model);
+
     
 protected:
-    void keyPressEvent(QKeyEvent *event);
     void contextMenuEvent(QContextMenuEvent *);
 
 private:
