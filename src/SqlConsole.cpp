@@ -32,7 +32,7 @@ SqlConsole::SqlConsole(QWidget *parent) :
     d = new SqlConsolePrivate(this);
     setFont(QFont("courier"));
 
-    //d->shl.setDocument(document());
+    d->shl.setDocument(document());
 }
 
 SqlConsole::~SqlConsole()
