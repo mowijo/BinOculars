@@ -69,6 +69,8 @@ public:
         connect(sqlconsole, SIGNAL(triggered(QString)), this, SLOT(performQueryOnActiveDatabase(QString)));
         ui->action_Recent_files->setEnabled(s.recentFiles().count() > 0);
         connect(ui->action_Recent_files, SIGNAL(triggered()), this, SLOT(openRecentFiles()));
+        ui->logview->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        ui->logview->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
         QActionGroup *g = new QActionGroup(mainwindow);
@@ -197,7 +199,7 @@ public slots:
         ui->logview->setModel(newdb->filteredLog());
         if(!logdelegate)
         {
-            logdelegate = new LogDelegate(newdb->log(), newdb->filteredLog());
+            logdelegate = new LogDelegate(newdb->log(), newdb->filteredLog(), ui->logview);
         }
         else
         {

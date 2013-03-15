@@ -3,7 +3,8 @@
 #include "LogFilter.h"
 #include <QFont>
 #include <QApplication>
-
+#include <QDebug>
+#include <QAbstractItemView>
 #include <QPainter>
 
 class LogDelegatePrivate
@@ -13,6 +14,7 @@ public:
     FilteredLog *proxy;
     QFont font;
     QFontMetrics *fontmetrics;
+    QAbstractItemView *view;
 
     void updateFont()
     {
@@ -28,12 +30,14 @@ public:
 };
 
 
-LogDelegate::LogDelegate(Log *soruce, FilteredLog *proxy)
+LogDelegate::LogDelegate(Log *soruce, FilteredLog *proxy, QAbstractItemView *view)
     : QStyledItemDelegate()
 {
     d = new LogDelegatePrivate();
-    d->soruce = soruce;
+    d->soruce = soruce;    
     d->proxy = proxy;
+    d->view = view;
+
     d->fontmetrics = 0;
     d->updateFont();
 
@@ -47,21 +51,73 @@ LogDelegate::~LogDelegate()
 
 void LogDelegate::paint(QPainter *p, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-
     QModelIndex sourceindex = d->proxy->mapToSource(index);
     QString text = d->soruce->data(sourceindex, Qt::DisplayRole).toString();
     p->setFont(d->font);
 
+
     if(option.state & QStyle::State_Selected)
     {
-        p->fillRect(option.rect, option.palette.highlight());
+        QItemSelectionModel *selection = d->view->selectionModel();
+        bool upstairsneighborselected = selection->isRowSelected(index.row()-1, index.parent());
+        bool downstairsneighborselected = selection->isRowSelected(index.row()+1, index.parent());
+
+        int dx = 1;
+        int dy = 1;
+        int dh = 2;
+        int dw = 2;
+
+        if(upstairsneighborselected)
+        {
+            dy--;
+            dh--;
+        }
+        if(downstairsneighborselected)
+        {
+            dh--;
+        }
+
+        int dashoffset = 0;
+        int number_of_upstairsneighborsselected = 0;
+        int r = index.row()-1;
+        if(option.rect.height()%2)
+        {
+            while(selection->isRowSelected(r, index.parent()))
+            {
+                number_of_upstairsneighborsselected++;
+                r--;
+                if(r < 0) break;
+            }
+            dashoffset = number_of_upstairsneighborsselected%2;
+
+        }
+
+
+        p->fillRect(option.rect.x()+dx, option.rect.y()+dy, option.rect.width()-dw, option.rect.height()-dh, option.palette.highlight());
+
+        QPen borderpen(Qt::CustomDashLine);
+        borderpen.setColor(Qt::black);
+        borderpen.setDashPattern(QVector<qreal>() << 1 << 1);
+        borderpen.setDashOffset(dashoffset);
+        p->setPen(borderpen);
+        p->drawLine(option.rect.topLeft(), option.rect.bottomLeft());
+        p->drawLine(option.rect.topRight(), option.rect.bottomRight());
+        if(!upstairsneighborselected)
+        {
+            p->drawLine(option.rect.topLeft(), option.rect.topRight());
+        }
+        if(!downstairsneighborselected)
+        {
+            p->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
+        }
+
     }
 
     if(d->soruce->isRowForErrorStatus(sourceindex.row()))
     {
         if(!d->soruce->wasSuccessfull(sourceindex.row()))
         {
-            text = ">> " + text;
+            text = tr("Error: %1").arg(text);
         }
     }
 
