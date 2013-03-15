@@ -52,18 +52,7 @@
         <property name="title">
          <string>SQL Log</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QTreeView" name="logview">
-           <property name="rootIsDecorated">
-            <bool>false</bool>
-           </property>
-           <attribute name="headerVisible">
-            <bool>false</bool>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QVBoxLayout" name="verticalLayout"/>
        </widget>
       </widget>
      </widget>

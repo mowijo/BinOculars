@@ -23,23 +23,23 @@ endif(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 ADD_SUBDIRECTORY(../lib/sqlhighlighter/src sqlhighlighter)
 
 SET( SOURCES
-        CommandHistory.cpp
-        DatabaseSelector.cpp
-        Field.cpp
-        QueryResultModel.cpp
-        QuickOpenDialog.cpp
-        RememberDialog.cpp
-        LogDelegate.cpp
-        Log.cpp
-        LogFilter.cpp
-        DataBase.cpp
-        DatabaseStructureModel.cpp
-        main.cpp
-        MainWindow.cpp
-        Settings.cpp
-        SqlConsole.cpp
-        Table.cpp
-
+    CommandHistory.cpp
+    DataBase.cpp
+    DatabaseSelector.cpp
+    DatabaseStructureModel.cpp
+    Field.cpp
+    Log.cpp
+    LogDelegate.cpp
+    LogFilter.cpp
+    LogView.cpp
+    main.cpp
+    MainWindow.cpp
+    QueryResultModel.cpp
+    QuickOpenDialog.cpp
+    RememberDialog.cpp
+    Settings.cpp
+    SqlConsole.cpp
+    Table.cpp
 )
 
 SET( FORMS

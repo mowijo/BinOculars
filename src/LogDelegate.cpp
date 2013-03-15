@@ -135,7 +135,6 @@ void LogDelegate::paint(QPainter *p, const QStyleOptionViewItem &option, const Q
         {
             p->setPen(QColor(128,0,0));
         }
-
     }
 
 

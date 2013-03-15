@@ -11,6 +11,7 @@
 #include "Log.h"
 #include "LogFilter.h"
 #include "LogDelegate.h"
+#include "LogView.h"
 
 #include <QAction>
 #include <QDebug>
@@ -23,6 +24,7 @@
 #include <QSqlRecord>
 #include <QSqlResult>
 #include <QTableView>
+
 
 class MainWindowPrivate : public QObject
 {
@@ -43,6 +45,7 @@ public:
     QTableView resultview;
     QueryResultModel *currentresult;
     LogDelegate *logdelegate;
+    LogView *logview;
 
     MainWindowPrivate(MainWindow *parent) : QObject(parent)
     {
@@ -69,9 +72,13 @@ public:
         connect(sqlconsole, SIGNAL(triggered(QString)), this, SLOT(performQueryOnActiveDatabase(QString)));
         ui->action_Recent_files->setEnabled(s.recentFiles().count() > 0);
         connect(ui->action_Recent_files, SIGNAL(triggered()), this, SLOT(openRecentFiles()));
-        ui->logview->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        ui->logview->setSelectionBehavior(QAbstractItemView::SelectRows);
-
+        logview = new LogView();
+        logview->setObjectName(QString::fromUtf8("logview"));
+        logview->setRootIsDecorated(false);
+        logview->header()->setVisible(false);
+        logview->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        logview->setSelectionBehavior(QAbstractItemView::SelectRows);
+        ui->logframe->layout()->addWidget(logview);
 
         QActionGroup *g = new QActionGroup(mainwindow);
         g->addAction(ui->actionBrowse);
@@ -196,18 +203,18 @@ public slots:
         enableGuiForDatabase();
         sqlconsole->history()->setHistory(s.commandHistoryFor(newdb->currentFileName()));
 
-        ui->logview->setModel(newdb->filteredLog());
+        logview->setModel(newdb->filteredLog());
         if(!logdelegate)
         {
-            logdelegate = new LogDelegate(newdb->log(), newdb->filteredLog(), ui->logview);
+            logdelegate = new LogDelegate(newdb->log(), newdb->filteredLog(), logview);
         }
         else
         {
             logdelegate->setLog(newdb->log());
             logdelegate->setLogFilter(newdb->filteredLog());
         }
-        ui->logview->setItemDelegateForColumn(0, logdelegate);
-        ui->logview->hideColumn(1);
+        logview->setItemDelegateForColumn(0, logdelegate);
+        logview->hideColumn(1);
     }
 
 
