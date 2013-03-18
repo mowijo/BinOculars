@@ -28,7 +28,7 @@ public:
 
     FilteredLog* filteredLog() const;
     Log* log() const;
-    
+
 private:
     DataBase(const DataBase &other);
     DataBase& operator==(const DataBase &other);

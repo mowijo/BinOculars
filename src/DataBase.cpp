@@ -19,6 +19,7 @@ public:
     QList<Table*> tables;
     Log log;
     FilteredLog logfilter;
+    QString connectionname;
 
     DataBasePrivate(DataBase *db) : QObject(db)
     {
@@ -35,8 +36,8 @@ public:
             error = tr("File %1 could not be found on disk.").arg(filename);
             return false;
         }
-
-        connection = QSqlDatabase::addDatabase("QSQLITE");
+        connectionname = QString("%1").arg((long)this);
+        connection = QSqlDatabase::addDatabase("QSQLITE", connectionname);
         connection.setDatabaseName(filename);
         if(!connection.open())
         {
@@ -134,6 +135,10 @@ QList<Table *> DataBase::tables()
 
 QSqlQuery DataBase::exec(const QString &query)
 {
+    if(!d->connection.open())
+    {
+        qDebug() << d->connection.lastError().text();
+    }
     QSqlQuery q = d->connection.exec(query);
     d->log.addEntry(q);
     return q;
@@ -159,3 +164,4 @@ Log *DataBase::log() const
 {
     return &d->log;
 }
+
