@@ -77,6 +77,8 @@
     <addaction name="action_Save"/>
     <addaction name="actionSave_all"/>
     <addaction name="separator"/>
+    <addaction name="actionCreate_New_Database"/>
+    <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menuViews">
@@ -223,6 +225,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionCreate_New_Database">
+   <property name="text">
+    <string>Create New Database...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>

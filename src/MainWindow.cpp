@@ -95,6 +95,7 @@ public:
         // connect actions
         connect(ui->action_Open_database, SIGNAL(triggered()), this, SLOT(selectFileToOpen()));
         connect(ui->action_Exit, SIGNAL(triggered()), mainwindow, SLOT(close()));
+        connect(ui->actionCreate_New_Database, SIGNAL(triggered()), this, SLOT(createNewDataBase()));
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
         connect(ui->actionSql_Console, SIGNAL(triggered()), mainwindow, SLOT(focusOnSqlConsole()));
         connect(ui->actionSpawn_Result, SIGNAL(triggered()), this, SLOT(spawnResult()));
@@ -148,6 +149,23 @@ public:
     }
 
 public slots:
+
+
+    void createNewDataBase()
+    {
+        QString filename = QFileDialog::getSaveFileName();
+        if(filename == "") return;
+        DataBase *newdb = DataBase::createNew(filename);
+        if(newdb)
+        {
+            setCurrentDb(newdb);
+            s.addRecentFile(filename);
+        }
+        else
+        {
+
+        }
+    }
 
     /** Will offer a list of recent files that are not already open*/
     void openRecentFiles()

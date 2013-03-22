@@ -17,6 +17,7 @@ class DataBase : public QObject
     Q_OBJECT
 public:
     explicit DataBase(QObject *parent = 0);
+    static DataBase * createNew(const QString &filename);
     virtual ~DataBase();
 
     bool open(const QString &filename);
@@ -25,6 +26,7 @@ public:
     QString lastError() const;
     QList<Table*> tables();
     QSqlQuery exec(const QString &query);
+
 
     FilteredLog* filteredLog() const;
     Log* log() const;

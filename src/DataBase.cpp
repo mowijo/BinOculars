@@ -113,6 +113,16 @@ DataBase::DataBase(QObject *parent) :
     d = new DataBasePrivate(this);
 }
 
+DataBase *DataBase::createNew(const QString &filename)
+{
+    DataBase *newdb = new DataBase;
+    newdb->d->connectionname = QString("%1").arg((long)newdb);
+    newdb->d->connection = QSqlDatabase::addDatabase("QSQLITE", newdb->d->connectionname);
+    newdb->d->connection.setDatabaseName(filename);
+    newdb->d->filename = filename;
+    return newdb;
+}
+
 DataBase::~DataBase()
 {
 }
