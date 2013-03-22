@@ -237,6 +237,12 @@ public slots:
         }
     }
 
+    void ensureVisible(const QModelIndex &, int, int )
+    {
+        logview->scrollToBottom();
+    }
+
+
 };
 
 #include "LogView.moc"
@@ -263,6 +269,9 @@ void LogView::setModel(QAbstractItemModel *model)
     connect(model, SIGNAL(modelReset ()), d, SLOT(updateSelectActions()));
     connect(model, SIGNAL(columnsRemoved ( const QModelIndex & , int , int )), d, SLOT(updateSelectActions()));
     connect(model, SIGNAL(columnsInserted ( const QModelIndex & , int, int )), d, SLOT(updateSelectActions()));
+
+    connect(model, SIGNAL(rowsInserted ( const QModelIndex & , int , int )), d, SLOT(ensureVisible(QModelIndex,int,int)));
+
 
 
 }

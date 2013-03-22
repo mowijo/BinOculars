@@ -236,6 +236,7 @@ public slots:
         logview->hideColumn(1);
         logview->hideColumn(2);
 
+
     }
 
 
