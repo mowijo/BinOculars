@@ -52,7 +52,7 @@ LogDelegate::~LogDelegate()
 void LogDelegate::paint(QPainter *p, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QModelIndex sourceindex = d->proxy->mapToSource(index);
-    QString text = d->soruce->data(sourceindex, Qt::DisplayRole).toString().replace("\n", QChar(0x2607));
+    QString text = d->soruce->data(sourceindex, Qt::DisplayRole).toString().replace("\n", QString(" ")+QChar(0x14A7)+" ");
     p->setFont(d->font);
 
 
