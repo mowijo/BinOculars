@@ -1,6 +1,7 @@
 #include "Settings.h"
 
 #include <QSet>
+#include <QFileInfo>
 #include <QString>
 #include <QDebug>
 
@@ -23,6 +24,16 @@ public:
     {
         if(recentfilesloaded) return;
         recentfiles = QSet<QString>::fromList(p->value("RecentFiles").toStringList());
+        QSet<QString> missing;
+        foreach(QString file, recentfiles.toList())
+        {
+            if(!QFileInfo(file).exists())
+            {
+                missing << file;
+            }
+        }
+        recentfiles.subtract(missing);
+        p->setValue("RecentFiles", QVariant(recentfiles.toList()));
         recentfilesloaded = true;
     }
 };

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT(CaptainOates)
+PROJECT(BinOkulars)
  
 SET(CMAKE_CXX_FLAGS "-Wall")
 
@@ -49,5 +49,5 @@ SET( FORMS
 
 QT4_WRAP_UI( UI ${FORMS} )
 
-ADD_EXECUTABLE( CaptainOates ${SOURCES} ${UI})
-TARGET_LINK_LIBRARIES( CaptainOates ${QT_LIBRARIES} tokenizer)
+ADD_EXECUTABLE( BinOkulars ${SOURCES} ${UI})
+TARGET_LINK_LIBRARIES( BinOkulars ${QT_LIBRARIES} tokenizer)
