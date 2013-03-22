@@ -371,6 +371,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(currentDatabaseIndexChanged(int)), d->databaseselector, SLOT(setCurrentDatabaseIndex(int)));
     connect(d->databaseselector, SIGNAL(databaseIndexSelected(int)), d, SLOT(setCurrentDb(int)));
 
+    this->setWindowIcon(QPixmap(":/images/application-icon.png"));
+    this->setWindowTitle("Captain Oates' Binoculars");
+
 }
 
 void MainWindow::focusOnSqlConsole()
