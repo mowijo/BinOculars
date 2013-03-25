@@ -16,33 +16,16 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_BINARY_DIR}
 ) 
 
-if (NOT CMAKE_BUILD_TYPE STREQUAL "Release")
-        SET(CMAKE_BUILD_TYPE Debug)
-endif(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 
 ADD_SUBDIRECTORY(../lib/sqlhighlighter/src sqlhighlighter)
+ADD_SUBDIRECTORY(model)
+ADD_SUBDIRECTORY(gui)
+
 
 QT4_ADD_RESOURCES(QRC_IMAGES images.qrc)
 
 SET( SOURCES
-    gui/CommandHistory.cpp
-    model/DataBase.cpp
-    gui/DatabaseSelector.cpp
-    gui/DatabaseStructureModel.cpp
-    model/Field.cpp
-    model/Log.cpp
-    gui/LogDelegate.cpp
-    model/LogFilter.cpp
-    gui/LogView.cpp
     main.cpp
-    gui/MainWindow.cpp
-    gui/QueryResultModel.cpp
-    gui/QuickOpenDialog.cpp
-    gui/RememberDialog.cpp
-    gui/Settings.cpp
-    gui/SqlConsole.cpp
-    model/Table.cpp
-    gui/TableView.cpp
 )
 
 
@@ -55,12 +38,5 @@ IF( MINGW )
 ENDIF( MINGW )
 
 
-SET( FORMS
-    gui/MainWindow.ui
-    gui/QuickOpenDialog.ui
-)
-
-QT4_WRAP_UI( UI ${FORMS} )
-
 ADD_EXECUTABLE( BinOkulars WIN32 ${SOURCES} ${UI} ${QRC_IMAGES} )
-TARGET_LINK_LIBRARIES( BinOkulars ${QT_LIBRARIES} tokenizer)
+TARGET_LINK_LIBRARIES( BinOkulars ${QT_LIBRARIES} gui tokenizer model )
