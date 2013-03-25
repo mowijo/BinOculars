@@ -3,10 +3,15 @@
 
 #include <QAbstractItemModel>
 
+
 namespace Model
 {
     class DataBase;
 }
+
+
+namespace Gui
+{
 
 class TreeModel : public QAbstractItemModel
 {
@@ -31,5 +36,7 @@ private:
     class TreeItem *rootItem;
 };
 
+
+} //namespace Gui
 
 #endif // DATABASESTRUCTUREMODEL_H

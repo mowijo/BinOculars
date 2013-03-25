@@ -6,6 +6,9 @@
 #include <QKeyEvent>
 #include <QItemSelectionModel>
 
+namespace Gui
+{
+
 class FileListModel : public QStringListModel
 {
     Qt::ItemFlags flags ( const QModelIndex & index ) const
@@ -117,3 +120,6 @@ QString QuickOpenDialog::rememberDialogDescription() const
 {
     return tr("A dialog that pops up at application launch allowing for easy access to recently opened databases.");
 }
+
+} // namespace Gui
+

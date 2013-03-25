@@ -9,6 +9,9 @@
 
 #include "LogDelegate.h"
 
+namespace Gui
+{
+
 class LogDelegatePrivate
 {
 public:
@@ -161,3 +164,5 @@ void LogDelegate::setLogFilter(Model::FilteredLog *proxy)
 {
     d->proxy = proxy;
 }
+
+} // namespace Gui

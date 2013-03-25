@@ -6,6 +6,9 @@
 
 #include "DatabaseStructureModel.h"
 
+namespace Gui
+{
+
 class TreeItem
 {
 public:
@@ -199,3 +202,5 @@ int TreeModel::rowCount(const QModelIndex &parent) const
 
     return parentItem->childCount();
 }
+
+} // namespace Gui

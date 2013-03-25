@@ -4,6 +4,9 @@
 #include <QSettings>
 #include <QStringList>
 
+namespace Gui
+{
+
 class Settings : public QSettings
 {
 public:
@@ -29,5 +32,6 @@ private:
 };
 
 
+} // namespace Gui
 
 #endif // SETTINGS_H

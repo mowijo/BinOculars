@@ -5,6 +5,10 @@
 #include <QString>
 #include <QDebug>
 
+namespace Gui
+{
+
+
 class SettingsPrivate
 {
 private:
@@ -99,3 +103,5 @@ void Settings::setCommandHistoryFor(const QString &filename, const QStringList &
     setValue(filename, history);
     endGroup();
 }
+
+} // namespace Gui

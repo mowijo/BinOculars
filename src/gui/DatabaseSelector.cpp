@@ -4,6 +4,9 @@
 #include <QListWidget>
 #include <QDebug>
 
+namespace Gui
+{
+
 class DatabaseSelectorPrivate  : QObject
 {
 
@@ -134,3 +137,5 @@ bool DatabaseSelector::eventFilter(QObject *obj, QEvent *event)
     }
     return QObject::eventFilter(obj, event);
 }
+
+} //  namespace Gui

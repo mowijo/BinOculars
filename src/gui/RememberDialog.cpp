@@ -3,6 +3,9 @@
 
 #include "Settings.h"
 
+namespace Gui
+{
+
 RememberDialog::RememberDialog(QWidget *parent) :
     QDialog(parent)
 {
@@ -39,3 +42,4 @@ bool RememberDialog::shouldShow(const QString &classname)
 
 }
 
+} // namespace Gui

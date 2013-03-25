@@ -5,6 +5,9 @@
 #include <QApplication>
 #include <QClipboard>
 
+namespace Gui
+{
+
 class TableViewPrivate : public QObject
 {
     Q_OBJECT
@@ -107,3 +110,5 @@ TableView::TableView(QWidget *parent) :
     d = new TableViewPrivate(this);
     setSelectionMode(QAbstractItemView::ContiguousSelection);
 }
+
+} // namespace Gui

@@ -3,6 +3,11 @@
 
 #include <QDialog>
 
+
+namespace Gui
+{
+
+
 class RememberDialog : public QDialog
 {
     Q_OBJECT
@@ -21,5 +26,7 @@ public:
 
 
 };
+
+} // namespace Gui
 
 #endif // REMEMBERDIALOG_H

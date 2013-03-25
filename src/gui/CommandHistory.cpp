@@ -2,6 +2,9 @@
 
 #include <QDebug>
 
+namespace Gui
+{
+
 class CommandHistoryPrivate
 {
 
@@ -114,3 +117,4 @@ QStringList CommandHistory::history() const
     return d->history;
 }
 
+} //namespace Gui

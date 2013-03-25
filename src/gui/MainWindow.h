@@ -4,10 +4,14 @@
 #include <QMainWindow>
 #include <QStringList>
 
+
 namespace Model
 {
     class DataBase;
 }
+
+namespace Gui
+{
 
 class MainWindow : public QMainWindow
 {
@@ -38,5 +42,7 @@ private:
     class MainWindowPrivate *d;
     friend class MainWindowPrivate;
 };
+
+} // namespace Gui
 
 #endif // MAINWINDOW_H

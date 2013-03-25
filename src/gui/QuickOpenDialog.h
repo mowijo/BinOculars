@@ -5,6 +5,11 @@
 #include <QStringList>
 #include "RememberDialog.h"
 
+
+namespace Gui
+{
+
+
 class QuickOpenDialog : public RememberDialog
 {
     Q_OBJECT
@@ -28,5 +33,8 @@ protected:
 private:
     class QuickOpenDialogPrivate *d;
 };
+
+
+} // namespace Gui
 
 #endif // QUICKOPENDIALOG_H

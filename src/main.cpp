@@ -11,14 +11,14 @@ int main(int argc, char *argv[])
     a.setOrganizationName("Captain Oates & the Krill Surfing Humpback Whales");
     a.setApplicationName("Binoculars");
     a.setApplicationVersion("1.0");
-    Settings s;
-    MainWindow w;
+    Gui::Settings s;
+    Gui::MainWindow w;
     w.show();
 
 
     if(s.recentFiles().count() > 0)
     {
-        QuickOpenDialog qod;
+        Gui::QuickOpenDialog qod;
         if(qod.shouldShow())
         {
             qod.setFileList(s.recentFiles());

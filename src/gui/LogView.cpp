@@ -8,6 +8,9 @@
 #include <QItemSelectionModel>
 #include <QMenu>
 
+namespace Gui
+{
+
 class LogViewPrivate : public QObject
 {
     Q_OBJECT
@@ -280,4 +283,6 @@ void LogView::contextMenuEvent(QContextMenuEvent *cme)
 
     d->contextmenu.popup(mapToGlobal(cme->pos()));
 }
+
+} //namespace Gui
 

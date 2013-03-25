@@ -4,6 +4,11 @@
 #include <QSqlRecord>
 
 #include <QDebug>
+
+
+namespace Gui
+{
+
 class QueryResultModelPrivate
 {
 public:
@@ -93,3 +98,5 @@ QVariant QueryResultModel::headerData(int section, Qt::Orientation orientation, 
     }
     return QVariant();
 }
+
+} // namespace Gui

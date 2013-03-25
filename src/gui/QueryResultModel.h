@@ -4,6 +4,9 @@
 #include <QAbstractTableModel>
 #include <QSqlQuery>
 
+namespace Gui
+{
+
 class QueryResultModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -22,5 +25,7 @@ private:
     QueryResultModel();
     class QueryResultModelPrivate *d;
 };
+
+} // namespace Gui
 
 #endif // QUERYRESULTMODEL_H

@@ -3,6 +3,10 @@
 
 #include <QTableView>
 
+namespace Gui
+{
+
+
 class TableView : public QTableView
 {
     Q_OBJECT
@@ -18,5 +22,7 @@ private:
     class TableViewPrivate *d;
 
 };
+
+} //namespace Gui
 
 #endif // TABLEVIEW_H

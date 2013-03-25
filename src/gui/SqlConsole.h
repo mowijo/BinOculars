@@ -3,6 +3,11 @@
 
 #include <QPlainTextEdit>
 
+
+namespace Gui
+{
+
+
 class SqlConsole : public QPlainTextEdit
 {
     Q_OBJECT
@@ -24,5 +29,8 @@ private:
 
     
 };
+
+
+} // namespace Gui
 
 #endif // SQLCONSOLE_H

@@ -3,6 +3,9 @@
 
 #include <QTreeView>
 
+namespace Gui
+{
+
 class LogView : public QTreeView
 {
     Q_OBJECT
@@ -20,5 +23,8 @@ protected:
 private:
     class LogViewPrivate *d;
 };
+
+
+} // namespace Gui
 
 #endif // LOGVIEW_H

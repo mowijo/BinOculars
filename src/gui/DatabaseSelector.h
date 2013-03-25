@@ -6,6 +6,10 @@
 #include <QListWidget>
 #include <QWidget>
 
+namespace Gui
+{
+
+
 /** The DatabaseSelector monitors events on the entire subtree of QWidgets under root. */
 
 class DatabaseSelector : public QListWidget
@@ -31,5 +35,5 @@ private:
     friend class DatabaseSelectorPrivate;
 };
 
-
+} // namespace Gui
 #endif // DATABASESELECTOR_H

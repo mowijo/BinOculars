@@ -5,6 +5,9 @@
 #include <QStringList>
 
 
+namespace Gui
+{
+
 class CommandHistory
 {
 
@@ -23,4 +26,5 @@ private:
 
 };
 
+} //namespace Gui
 #endif // COMMANDHISTORY_H

@@ -9,6 +9,10 @@ namespace Model
     class FilteredLog;
 }
 
+
+namespace Gui
+{
+
 class LogDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -27,5 +31,7 @@ private:
     class LogDelegatePrivate *d;
     
 };
+
+} // namespace Gui
 
 #endif // LOGDELEGATE_H

@@ -29,6 +29,10 @@
 #include "ui_MainWindow.h"
 
 
+namespace Gui
+{
+
+
 class MainWindowPrivate : public QObject
 {
     Q_OBJECT
@@ -405,3 +409,5 @@ bool MainWindow::openFile(const QString &filename)
     d->setCurrentDb(newdb);
     return true;
 }
+
+} // namespace Gui

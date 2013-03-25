@@ -4,6 +4,8 @@
 #include <QKeySequence>
 #include "CommandHistory.h"
 
+namespace Gui
+{
 
 class SqlConsolePrivate : public QObject
 {
@@ -82,3 +84,5 @@ void SqlConsole::keyPressEvent(QKeyEvent *e)
 
     QPlainTextEdit::keyPressEvent(e);
 }
+
+} // namespace Gui
