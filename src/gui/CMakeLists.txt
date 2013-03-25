@@ -39,7 +39,10 @@ SET( FORMS
     QuickOpenDialog.ui
 )
 
+QT4_ADD_RESOURCES(QRC_IMAGES images.qrc)
+
+
 QT4_WRAP_UI( UI ${FORMS} )
 
-ADD_LIBRARY( gui STATIC ${SOURCES}  ${UI} )
+ADD_LIBRARY( gui STATIC ${SOURCES} ${UI} ${QRC_IMAGES})
 

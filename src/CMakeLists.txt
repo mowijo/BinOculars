@@ -22,8 +22,6 @@ ADD_SUBDIRECTORY(model)
 ADD_SUBDIRECTORY(gui)
 
 
-QT4_ADD_RESOURCES(QRC_IMAGES images.qrc)
-
 SET( SOURCES
     main.cpp
 )
@@ -38,5 +36,5 @@ IF( MINGW )
 ENDIF( MINGW )
 
 
-ADD_EXECUTABLE( BinOkulars WIN32 ${SOURCES} ${UI} ${QRC_IMAGES} )
+ADD_EXECUTABLE( BinOkulars WIN32 ${SOURCES} ${UI}  )
 TARGET_LINK_LIBRARIES( BinOkulars ${QT_LIBRARIES} gui tokenizer model )
