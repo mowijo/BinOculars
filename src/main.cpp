@@ -1,8 +1,9 @@
-#include <QtGui/QApplication>
-#include "MainWindow.h"
-#include <Settings.h>
-#include <QuickOpenDialog.h>
 #include <QDebug>
+#include <QtGui/QApplication>
+
+#include <gui/MainWindow.h>
+#include <gui/QuickOpenDialog.h>
+#include <gui/Settings.h>
 
 int main(int argc, char *argv[])
 {

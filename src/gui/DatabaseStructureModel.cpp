@@ -1,12 +1,10 @@
 #include <QStringList>
+
+#include <model/DataBase.h>
+#include <model/Field.h>
+#include <model/Table.h>
+
 #include "DatabaseStructureModel.h"
-#include "DataBase.h"
-#include "Table.h"
-#include "Field.h"
-
-
-
-
 
 class TreeItem
 {

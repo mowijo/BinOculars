@@ -1,11 +1,13 @@
-#include "LogDelegate.h"
-#include "Log.h"
-#include "LogFilter.h"
-#include <QFont>
+#include <QAbstractItemView>
 #include <QApplication>
 #include <QDebug>
-#include <QAbstractItemView>
+#include <QFont>
 #include <QPainter>
+
+#include <model/Log.h>
+#include <model/LogFilter.h>
+
+#include "LogDelegate.h"
 
 class LogDelegatePrivate
 {

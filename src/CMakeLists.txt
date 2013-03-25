@@ -25,24 +25,24 @@ ADD_SUBDIRECTORY(../lib/sqlhighlighter/src sqlhighlighter)
 QT4_ADD_RESOURCES(QRC_IMAGES images.qrc)
 
 SET( SOURCES
-    CommandHistory.cpp
-    DataBase.cpp
-    DatabaseSelector.cpp
-    DatabaseStructureModel.cpp
-    Field.cpp
-    Log.cpp
-    LogDelegate.cpp
-    LogFilter.cpp
-    LogView.cpp
+    gui/CommandHistory.cpp
+    model/DataBase.cpp
+    gui/DatabaseSelector.cpp
+    gui/DatabaseStructureModel.cpp
+    model/Field.cpp
+    model/Log.cpp
+    gui/LogDelegate.cpp
+    model/LogFilter.cpp
+    gui/LogView.cpp
     main.cpp
-    MainWindow.cpp
-    QueryResultModel.cpp
-    QuickOpenDialog.cpp
-    RememberDialog.cpp
-    Settings.cpp
-    SqlConsole.cpp
-    Table.cpp
-    TableView.cpp
+    gui/MainWindow.cpp
+    gui/QueryResultModel.cpp
+    gui/QuickOpenDialog.cpp
+    gui/RememberDialog.cpp
+    gui/Settings.cpp
+    gui/SqlConsole.cpp
+    model/Table.cpp
+    gui/TableView.cpp
 )
 
 
@@ -56,8 +56,8 @@ ENDIF( MINGW )
 
 
 SET( FORMS
-    MainWindow.ui
-    QuickOpenDialog.ui
+    gui/MainWindow.ui
+    gui/QuickOpenDialog.ui
 )
 
 QT4_WRAP_UI( UI ${FORMS} )

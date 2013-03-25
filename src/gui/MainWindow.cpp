@@ -1,18 +1,3 @@
-#include "CommandHistory.h"
-#include "DataBase.h"
-#include "DatabaseSelector.h"
-#include "DatabaseStructureModel.h"
-#include "MainWindow.h"
-#include "QueryResultModel.h"
-#include "QuickOpenDialog.h"
-#include "Settings.h"
-#include "SqlConsole.h"
-#include "ui_MainWindow.h"
-#include "Log.h"
-#include "LogFilter.h"
-#include "LogDelegate.h"
-#include "LogView.h"
-
 #include <QAction>
 #include <QDebug>
 #include <QFileDialog>
@@ -24,8 +9,24 @@
 #include <QSqlRecord>
 #include <QSqlResult>
 #include <QTableView>
+
+#include <model/DataBase.h>
+#include <model/Log.h>
+#include <model/LogFilter.h>
+
+#include "CommandHistory.h"
+#include "DatabaseSelector.h"
+#include "DatabaseStructureModel.h"
+#include "LogDelegate.h"
+#include "LogView.h"
+#include "MainWindow.h"
+#include "QueryResultModel.h"
+#include "QuickOpenDialog.h"
+#include "Settings.h"
+#include "SqlConsole.h"
 #include "TableView.h"
 
+#include "ui_MainWindow.h"
 
 
 class MainWindowPrivate : public QObject
