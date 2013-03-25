@@ -12,8 +12,8 @@
 class LogDelegatePrivate
 {
 public:
-    Log *soruce;
-    FilteredLog *proxy;
+    Model::Log *soruce;
+    Model::FilteredLog *proxy;
     QFont font;
     QFontMetrics *fontmetrics;
     QAbstractItemView *view;
@@ -32,7 +32,7 @@ public:
 };
 
 
-LogDelegate::LogDelegate(Log *soruce, FilteredLog *proxy, QAbstractItemView *view)
+LogDelegate::LogDelegate(Model::Log *soruce, Model::FilteredLog *proxy, QAbstractItemView *view)
     : QStyledItemDelegate()
 {
     d = new LogDelegatePrivate();
@@ -152,12 +152,12 @@ QSize LogDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelInde
     return QSize(150, d->fontmetrics->height()*1.25);
 }
 
-void LogDelegate::setLog(Log *soruce)
+void LogDelegate::setLog(Model::Log *soruce)
 {
     d->soruce = soruce;
 }
 
-void LogDelegate::setLogFilter(FilteredLog *proxy)
+void LogDelegate::setLogFilter(Model::FilteredLog *proxy)
 {
     d->proxy = proxy;
 }

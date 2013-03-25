@@ -4,6 +4,9 @@
 #include <QSortFilterProxyModel>
 #include <QSqlQuery>
 
+namespace Model
+{
+
 class FilteredLog : public QSortFilterProxyModel
 {
 
@@ -20,5 +23,7 @@ protected:
 private:
     class FilteredLogPrivate *d;
 };
+
+} // namespace Model
 
 #endif // LOGFILTER_H

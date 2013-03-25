@@ -4,6 +4,10 @@
 #include "Table.h"
 #include "Log.h"
 #include "LogFilter.h"
+#include <QSqlDatabase>
+
+namespace Model
+{
 
 class DataBasePrivate : public QObject
 {
@@ -175,3 +179,5 @@ Log *DataBase::log() const
     return &d->log;
 }
 
+
+} // namespace Model

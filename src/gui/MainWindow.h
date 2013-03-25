@@ -4,6 +4,11 @@
 #include <QMainWindow>
 #include <QStringList>
 
+namespace Model
+{
+    class DataBase;
+}
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -22,7 +27,7 @@ protected:
     void showEvent(QShowEvent *);
 
 signals:
-    void currentDatabaseChanged(class DataBase *db);
+    void currentDatabaseChanged(Model::DataBase *db);
     void currentDatabaseIndexChanged(int);
     void openDataBasesChanged(const QStringList &filenames);
 

@@ -3,12 +3,12 @@
 
 #include <QObject>
 #include <QList>
-#include "LogFilter.h"
+#include <QSqlQuery>
 
-
+namespace Model
+{
 
 class Table;
-class QSqlDatabase;
 class FilteredLog;
 class Log;
 
@@ -39,4 +39,5 @@ private:
 
 };
 
+} //namespace Model
 #endif // DATABASE_H

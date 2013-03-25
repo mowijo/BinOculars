@@ -35,12 +35,12 @@ class MainWindowPrivate : public QObject
 
 private:
     MainWindow * mainwindow;
-    QList<DataBase*> databases;
+    QList<Model::DataBase*> databases;
 
 public:
     Ui::MainWindow *ui;
     Settings s;
-    DataBase *currentdatabase;
+    Model::DataBase *currentdatabase;
     TreeModel *dsm;
     SqlConsole *sqlconsole;
     DatabaseSelector *databaseselector;
@@ -158,7 +158,7 @@ public slots:
     {
         QString filename = QFileDialog::getSaveFileName();
         if(filename == "") return;
-        DataBase *newdb = DataBase::createNew(filename);
+        Model::DataBase *newdb = Model::DataBase::createNew(filename);
         if(newdb)
         {
             setCurrentDb(newdb);
@@ -175,7 +175,7 @@ public slots:
     {
 
         QSet<QString> openfiles;
-        foreach(DataBase*db, databases)
+        foreach(Model::DataBase*db, databases)
         {
             openfiles << db->currentFileName();
         }
@@ -200,7 +200,7 @@ public slots:
         mainwindow->openFile(a->data().toString());
     }
 
-    void setCurrentDb(DataBase *newdb)
+    void setCurrentDb(Model::DataBase *newdb)
     {
 
         if(databases.indexOf(newdb) < 0)
@@ -283,11 +283,11 @@ public slots:
     }
 
 
-    void addDatabase(DataBase *db)
+    void addDatabase(Model::DataBase *db)
     {
         databases << db;
         QStringList filenames;
-        foreach(DataBase *d, databases)
+        foreach(Model::DataBase *d, databases)
         {
             filenames << d->currentFileName();
         }
@@ -395,7 +395,7 @@ void MainWindow::showEvent(QShowEvent *)
 
 bool MainWindow::openFile(const QString &filename)
 {
-    DataBase *newdb = new DataBase;
+    Model::DataBase *newdb = new Model::DataBase;
     if(!newdb->open(filename))
     {
         QMessageBox::warning(this, tr("Could not load file"), newdb->lastError());

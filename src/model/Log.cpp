@@ -3,6 +3,10 @@
 #include <QColor>
 #include <math.h>
 
+namespace Model
+{
+
+
 class LogPrivate : QObject
 {
 
@@ -125,3 +129,5 @@ bool Log::isRowForErrorStatus(int row) const
     return (queryidx * 2) != row;
 
 }
+
+} // namespace Model

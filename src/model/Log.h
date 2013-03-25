@@ -4,6 +4,9 @@
 #include <QAbstractItemModel>
 #include <QSqlQuery>
 
+namespace Model
+{
+
 class Log : public QAbstractItemModel
 {
     Q_OBJECT
@@ -30,4 +33,5 @@ private:
    friend class LogPrivate;
 };
 
+} //  namespace Model
 #endif // LOG_H

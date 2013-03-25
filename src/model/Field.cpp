@@ -5,6 +5,9 @@
 
 #include <QDebug>
 
+namespace Model
+{
+
 class FieldPrivate
 {
 private:
@@ -119,3 +122,4 @@ void Field::setPrimaryKey(bool pk)
     d->primarykey = pk;
 }
 
+} // namespace Model

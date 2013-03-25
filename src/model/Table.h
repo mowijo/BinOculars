@@ -5,6 +5,9 @@
 #include <QSqlDatabase>
 #include <QList>
 
+namespace Model
+{
+
 class Field;
 class Table
 {
@@ -30,6 +33,6 @@ private:
 
 };
 
-
+} // namespace Model
 
 #endif // TABLE_H

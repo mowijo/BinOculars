@@ -4,6 +4,9 @@
 #include <QString>
 #include <QSqlDatabase>
 
+namespace Model
+{
+
 class Field
 {
 public:
@@ -32,6 +35,6 @@ private:
 
 };
 
-
+} //namespace Model
 
 #endif // FIELD_H

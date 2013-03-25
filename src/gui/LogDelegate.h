@@ -3,18 +3,24 @@
 
 #include <QStyledItemDelegate>
 
+namespace Model
+{
+    class Log;
+    class FilteredLog;
+}
+
 class LogDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit LogDelegate(class Log*soruce, class FilteredLog *proxy, QAbstractItemView *view);
+    explicit LogDelegate(Model::Log* soruce, Model::FilteredLog *proxy, QAbstractItemView *view);
 
     ~LogDelegate();
     void paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
     QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 
-    void setLog(class Log* soruce);
-    void setLogFilter(class FilteredLog *proxy);
+    void setLog(Model::Log* soruce);
+    void setLogFilter(Model::FilteredLog *proxy);
 
 
 private:

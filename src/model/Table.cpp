@@ -7,6 +7,9 @@
 
 #include "Field.h"
 
+namespace Model
+{
+
 class TablePrivate
 {
 private:
@@ -151,3 +154,5 @@ QList<Field *> Table::columns()
 {
     return d->columns;
 }
+
+} // namespace Model

@@ -88,16 +88,16 @@ int TreeItem::row() const
 
 
 
-TreeModel::TreeModel(DataBase *db, QObject *parent)
+TreeModel::TreeModel(Model::DataBase *db, QObject *parent)
     : QAbstractItemModel(parent)
 {
     this->db = db;
 
     rootItem = new TreeItem(QList<QVariant>() << "Name" << "Object" << "Type" << "Schema");
-    foreach(Table* t, db->tables())
+    foreach(Model::Table* t, db->tables())
     {
         TreeItem *table = new TreeItem(QList<QVariant>() << t->name() << "Table" << "" << t->creationSql().replace("\n", ""));
-        foreach(Field *c, t->columns())
+        foreach(Model::Field *c, t->columns())
         {
             TreeItem *row = new TreeItem(QList<QVariant>() << c->name() << "Field" << c->type() << "");
             table->appendChild(row);

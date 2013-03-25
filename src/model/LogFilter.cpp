@@ -2,6 +2,9 @@
 #include "Log.h"
 #include <QDebug>
 
+namespace Model
+{
+
 class FilteredLogPrivate
 {
 public:
@@ -49,3 +52,5 @@ void FilteredLog::addEntry(const QSqlQuery &query)
     d->logmodel->addEntry(query);
     invalidate();
 }
+
+} // namespace Model

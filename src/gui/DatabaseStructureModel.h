@@ -3,14 +3,17 @@
 
 #include <QAbstractItemModel>
 
-class DataBase;
+namespace Model
+{
+    class DataBase;
+}
 
 class TreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    TreeModel(DataBase *db, QObject *parent = 0);
+    TreeModel(Model::DataBase *db, QObject *parent = 0);
     ~TreeModel();
 
     QVariant data(const QModelIndex &index, int role) const;
@@ -24,7 +27,7 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
 private:
-    class DataBase *db;
+    class Model::DataBase *db;
     class TreeItem *rootItem;
 };
 
