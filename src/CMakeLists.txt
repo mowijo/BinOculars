@@ -42,6 +42,7 @@ SET( SOURCES
     Settings.cpp
     SqlConsole.cpp
     Table.cpp
+    TableView.cpp
 )
 
 
@@ -59,8 +60,6 @@ SET( FORMS
     QuickOpenDialog.ui
 )
 
-
-MESSAGE( status "Sources are"${SOURCES} )
 QT4_WRAP_UI( UI ${FORMS} )
 
 ADD_EXECUTABLE( BinOkulars WIN32 ${SOURCES} ${UI} ${QRC_IMAGES} )

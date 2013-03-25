@@ -24,6 +24,8 @@
 #include <QSqlRecord>
 #include <QSqlResult>
 #include <QTableView>
+#include "TableView.h"
+
 
 
 class MainWindowPrivate : public QObject
@@ -42,7 +44,7 @@ public:
     SqlConsole *sqlconsole;
     DatabaseSelector *databaseselector;
     QSqlDatabase qdb;
-    QTableView resultview;
+    TableView resultview;
     QueryResultModel *currentresult;
     LogDelegate *logdelegate;
     LogView *logview;
@@ -322,7 +324,7 @@ public slots:
     void spawnResult()
     {
         if(!currentresult) return;
-        QTableView *qtw = new QTableView();
+        TableView *qtw = new TableView();
         QueryResultModel *qrm = currentresult->clone();
         qtw->setAttribute(Qt::WA_DeleteOnClose);
         qrm->setParent(qtw);
@@ -352,7 +354,7 @@ public slots:
             delete currentresult;
         }
         currentresult = new QueryResultModel(q);
-        resultview.setModel(currentresult);
+        resultview.setModel(currentresult);        
         ui->actionSpawn_Result->setEnabled(true);
 
     }
