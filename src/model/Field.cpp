@@ -114,7 +114,7 @@ void Field::setNotNullFlag(bool nn)
 
 void Field::setDfltValue(QString dflt)
 {
-    d->dflt_value = dflt;
+    d->dflt_value = dflt.trimmed();
 }
 
 void Field::setPrimaryKey(bool pk)

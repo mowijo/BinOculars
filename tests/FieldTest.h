@@ -8,7 +8,9 @@ class FieldTest : public QObject
     Q_OBJECT
     
 private slots:
-    void toUpper();
+    void testToCreateDefinition();
+    void testToCreateDefinition_data();
+
 };
 
 
