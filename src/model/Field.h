@@ -18,17 +18,18 @@ public:
     int id() const;
     QString name() const;
     QString type() const;
-    bool notNull() const;
+    bool isNotNullFlagSet() const;
     QString dfltValue() const;
-    bool primaryKey() const;
+    bool isPrimaryKey() const;
 
     void setId(int id);
     void setName(QString name);
     void setType(QString type);
-    void setNotNull(bool nn);
+    void setNotNullFlag(bool nn);
     void setDfltValue(QString dflt);
     void setPrimaryKey(bool pk);
 
+        QString toCreateDefinition() const;
 
 private:
     class FieldPrivate *d;

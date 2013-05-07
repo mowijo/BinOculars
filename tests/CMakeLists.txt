@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 2.8)
+
+PROJECT(ProjectModelTests)
+ 
+SET(CMAKE_CXX_FLAGS "-Wall")
+
+FIND_PACKAGE( Qt4 REQUIRED )
+SET( QT_USE_QTSQL TRUE )
+INCLUDE( ${QT_USE_FILE} )
+INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
+
+set(CMAKE_AUTOMOC ON) 
+
+SET( SOURCES
+    main.cpp
+    FieldTest.cpp
+    LibModelTestSuite.cpp
+)
+
+ADD_EXECUTABLE( tests ${SOURCES}   )
+TARGET_LINK_LIBRARIES( tests ${QT_LIBRARIES} ${QT_QTTEST_LIBRARY})

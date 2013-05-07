@@ -27,7 +27,6 @@ public:
     QList<Table*> tables();
     QSqlQuery exec(const QString &query);
 
-
     FilteredLog* filteredLog() const;
     Log* log() const;
 

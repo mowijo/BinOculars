@@ -85,6 +85,7 @@
     <property name="title">
      <string>&amp;Views</string>
     </property>
+    <addaction name="actionEdit_Field"/>
     <addaction name="actionBrowse"/>
     <addaction name="actionExplore"/>
     <addaction name="actionModify"/>
@@ -233,6 +234,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionEdit_Field">
+   <property name="text">
+    <string>Edit Field</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
  </widget>

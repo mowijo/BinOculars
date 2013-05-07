@@ -179,5 +179,4 @@ Log *DataBase::log() const
     return &d->log;
 }
 
-
 } // namespace Model

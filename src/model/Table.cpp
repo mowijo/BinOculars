@@ -107,7 +107,7 @@ bool Table::introspect()
             return false;
         }
         else {
-            c->setNotNull(query.value(index).toBool());
+            c->setNotNullFlag(query.value(index).toBool());
         }
 
         index = record.indexOf("dflt_value");
@@ -153,6 +153,21 @@ QString Table::creationSql() const
 QList<Field *> Table::columns()
 {
     return d->columns;
+}
+
+bool Table::addField(const Field &field, int position)
+{
+    return true;
+}
+
+bool Table::removeField(int position)
+{
+    return true;
+}
+
+bool Table::moveField(int current_position, int new_position)
+{
+    return true;
 }
 
 } // namespace Model

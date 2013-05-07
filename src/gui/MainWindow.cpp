@@ -11,11 +11,13 @@
 #include <QTableView>
 
 #include <model/DataBase.h>
+#include <model/Field.h>
 #include <model/Log.h>
 #include <model/LogFilter.h>
 
 #include "CommandHistory.h"
 #include "DatabaseSelector.h"
+#include "FieldDialog.h"
 #include "DatabaseStructureModel.h"
 #include "LogDelegate.h"
 #include "LogView.h"
@@ -106,6 +108,7 @@ public:
         connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(save()));
         connect(ui->actionSql_Console, SIGNAL(triggered()), mainwindow, SLOT(focusOnSqlConsole()));
         connect(ui->actionSpawn_Result, SIGNAL(triggered()), this, SLOT(spawnResult()));
+        connect(ui->actionEdit_Field, SIGNAL(triggered()), this, SLOT(editField()));
 
         restoreGeometries();
         disableGuiForDatabase();
@@ -156,6 +159,18 @@ public:
     }
 
 public slots:
+
+    void editField()
+    {
+        FieldDialog fd;
+        Model::Field f;
+        f.setName("A name");
+        f.setDfltValue("Some default");
+        f.setPrimaryKey(false);
+        f.setNotNullFlag(true);
+        f.setType("Ged");
+        fd.display(&f);
+    }
 
 
     void createNewDataBase()

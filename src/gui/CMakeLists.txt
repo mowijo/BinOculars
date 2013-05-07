@@ -23,6 +23,7 @@ SET( SOURCES
     CommandHistory.cpp
     DatabaseSelector.cpp
     DatabaseStructureModel.cpp
+    FieldDialog.cpp
     LogDelegate.cpp
     LogView.cpp
     MainWindow.cpp
@@ -35,6 +36,7 @@ SET( SOURCES
 )
 
 SET( FORMS
+    FieldDialog.ui
     MainWindow.ui
     QuickOpenDialog.ui
 )
