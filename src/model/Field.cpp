@@ -25,6 +25,9 @@ public:
     FieldPrivate(Field *p)
     {
         this->p = p;
+        notnull = false;
+        primarykey = false;
+        id = -1;
     }
 
     void deepCopy(FieldPrivate *other)
@@ -50,7 +53,7 @@ Field::Field(const Field &other)
     d->deepCopy(other.d);
 }
 
-Field &Field::operator ==(const Field &other)
+Field &Field::operator=(const Field &other)
 {
     if(this == &other) return *this;
     d->deepCopy(other.d);
@@ -142,6 +145,22 @@ QString Field::toCreateDefinition() const
     }
 
     return r;
+}
+
+/** Ignores the id for logical comparison.*/
+bool Field::operator ==(const Field &rhs)
+{
+    if(d->name != rhs.d->name) return false;
+    if(d->type != rhs.d->type) return false;
+    if(d->dflt_value != rhs.d->dflt_value) return false;
+    if(d->primarykey != rhs.d->primarykey) return false;
+    if(d->notnull != rhs.d->notnull) return false;
+    return true;
+}
+
+bool Field::operator !=(const Field &rhs)
+{
+    return !(this->operator ==(rhs));
 }
 
 } // namespace Model

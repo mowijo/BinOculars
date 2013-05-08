@@ -12,8 +12,11 @@ class Field
 public:
     Field();
     Field(const Field &other);
-    Field &operator==(const Field &other);
+    Field &operator=(const Field &other);
     ~Field();
+
+    bool operator==(const Field &rhs);
+    bool operator!=(const Field &rhs);
 
     int id() const;
     QString name() const;
@@ -29,7 +32,8 @@ public:
     void setDfltValue(QString dflt);
     void setPrimaryKey(bool pk);
 
-        QString toCreateDefinition() const;
+    QString toCreateDefinition() const;
+
 
 private:
     class FieldPrivate *d;
