@@ -12,8 +12,9 @@ class Field;
 class Table
 {
 public:
-    Table(QSqlDatabase *database);
-    Table(const QString name);
+    Table();
+    explicit Table(QSqlDatabase *database);
+    explicit Table(const QString name);
     Table(const QString name, const QString creationsql);
     ~Table();
 
@@ -30,8 +31,8 @@ public:
     bool moveField(int current_position, int new_position);
 
 private:
-    Table(const Table &other);
-    Table &operator==(const Table &other);
+    Table(const Table &other);  //Do not implement!
+    Table &operator=(const Table &other); //Do not implement!
     class TablePrivate *d;
 
 };

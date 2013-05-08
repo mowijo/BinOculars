@@ -30,6 +30,11 @@ public:
 
 };
 
+Table::Table()
+{
+    d = new TablePrivate(this);
+}
+
 Table::Table(QSqlDatabase *database)
 {
     d = new TablePrivate(this);
@@ -61,7 +66,11 @@ void Table::setDatabase(QSqlDatabase *database)
 
 bool Table::introspect()
 {
-    if(d->database == 0) return false;
+    if(d->database == 0)
+    {
+        d->error = QObject::tr("No database has been set on the table, why the it cannot introspect itself.");
+        return false;
+    }
     QSqlQuery query = d->database->exec("PRAGMA TABLE_INFO("+d->name+");");
     while(query.next())
     {

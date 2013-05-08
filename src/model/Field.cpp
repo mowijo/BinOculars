@@ -147,7 +147,7 @@ QString Field::toCreateDefinition() const
     return r;
 }
 
-/** Ignores the id for logical comparison.*/
+/** Ignores the id for comparison.*/
 bool Field::operator ==(const Field &rhs)
 {
     if(d->name != rhs.d->name) return false;
@@ -158,6 +158,7 @@ bool Field::operator ==(const Field &rhs)
     return true;
 }
 
+/** Ignores the id for comparison.*/
 bool Field::operator !=(const Field &rhs)
 {
     return !(this->operator ==(rhs));

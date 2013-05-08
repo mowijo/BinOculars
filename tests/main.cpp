@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QtTest/QtTest>
-
+#include <QTemporaryFile>
 #include "LibModelTestSuite.h"
 
 int main(int argc, char* argv[])

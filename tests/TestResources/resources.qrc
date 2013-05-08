@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/TestResources/Model/">
+        <file>database-1</file>
+    </qresource>
+</RCC>

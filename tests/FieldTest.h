@@ -19,8 +19,6 @@ private slots:
     void testCopyConstructor();
     void testDefaultConstructor();
 
-
-
 };
 
 

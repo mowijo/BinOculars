@@ -16,9 +16,18 @@ set(CMAKE_AUTOMOC ON)
 
 SET( SOURCES
     main.cpp
+    DataBaseTest.cpp
     FieldTest.cpp
     LibModelTestSuite.cpp
+    TableTest.cpp
 )
 
-ADD_EXECUTABLE( tests ${SOURCES}   )
+
+SET( RESOURCES
+    TestResources/resources.qrc
+)
+
+QT4_ADD_RESOURCES( RESOURCE_FILES ${RESOURCES} )
+
+ADD_EXECUTABLE( tests ${SOURCES} ${RESOURCE_FILES} )
 TARGET_LINK_LIBRARIES( tests ${QT_QTTEST_LIBRARY} model ${QT_LIBRARIES} )
