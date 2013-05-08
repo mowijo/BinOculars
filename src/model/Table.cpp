@@ -28,6 +28,50 @@ public:
         database = 0;
     }
 
+    bool validateFieldForAddition(const Field &field)
+    {
+        if(field.isPrimaryKey())
+        {
+            error = QObject::tr("Fields must not be primary keys.");
+            return false;
+        }
+        if( (field.dfltValue().toUpper() == "CURRENT_TIME")
+                || (field.dfltValue().toUpper() == "CURRENT_DATE")
+                || (field.dfltValue().toUpper() == "CURRENT_TIMESTAMP")
+                )
+        {
+            error = QObject::tr("Default value when adding a fiels may not be any of %1.").arg("CURRENT_TIME, CURRENT_DATE, CURRENT_TIMESTAMP");
+            return false;
+        }
+        if((field.dfltValue().trimmed()[0] == '(') && field.dfltValue().trimmed()[field.dfltValue().trimmed().length()-1] == ')')
+        {
+            error = QObject::tr("Default value when adding a column must not me an expression in paranthesis.");
+            return false;
+        }
+        if(field.isNotNullFlagSet())
+        {
+            if ((field.dfltValue().trimmed().toUpper() == "NULL")
+                ||
+                (field.dfltValue().trimmed() == ""))
+            {
+                error = QObject::tr("When adding a field marked as NOT NULL the default value must be a non NULL value.");
+                return false;
+            }
+        }
+        if(field.name().trimmed() == "")
+        {
+            error = QObject::tr("A field must have a name in order to be added.");
+            return false;
+        }
+        if(field.type().trimmed() == "")
+        {
+            error = QObject::tr("A field must have a type in order to be added.");
+            return false;
+        }
+        return true;
+    }
+
+
 };
 
 Table::Table()
@@ -164,8 +208,16 @@ QList<Field *> Table::columns()
     return d->columns;
 }
 
+
+/**
+* The column may not have a PRIMARY KEY or UNIQUE constraint.
+* The column may not have a default value of CURRENT_TIME, CURRENT_DATE, CURRENT_TIMESTAMP, or an expression in parentheses.
+* If a NOT NULL constraint is specified, then the column must have a default value other than NULL.
+* If foreign key constraints are enabled and a column with a REFERENCES clause is added, the column must have a default value of NULL.
+  */
 bool Table::addField(const Field &field, int position)
 {
+    if(!d->validateFieldForAddition(field)) return false;
     return true;
 }
 

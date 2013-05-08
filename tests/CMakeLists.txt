@@ -20,6 +20,7 @@ SET( SOURCES
     FieldTest.cpp
     LibModelTestSuite.cpp
     TableTest.cpp
+    TestDataBaseProvider.cpp
 )
 
 

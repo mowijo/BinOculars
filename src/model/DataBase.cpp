@@ -49,21 +49,8 @@ public:
             return false;
         }
 
-        //First, introspect all tables.
-        QSqlQuery query  = connection.exec("SELECT name, sql FROM sqlite_master where type='table'");
-        if(query.lastError().type() != QSqlError::NoError)
-        {
-            error = query.lastError().text();
-            return false;
-        }
-        while(query.next())
-        {
-            Table *t = new Table(query.value(0).toString(), query.value(1).toString());
-            t->setDatabase(&connection);
-            t->introspect();
-            tables << t;
-            qDebug() << "Introspects table" << t->name();
-        }
+        if(!introspect()) return false;
+
 
 //        //TODO
 //        //Next, introcpect all indexes (whatever that may be...)
@@ -105,6 +92,27 @@ public:
         }
         this->filename = filename;
         f.close();
+        return true;
+    }
+
+    bool introspect()
+    {
+        while(tables.size() > 0) delete tables.takeFirst();
+
+        //First, introspect all tables.
+        QSqlQuery query  = connection.exec("SELECT name, sql FROM sqlite_master where type='table'");
+        if(query.lastError().type() != QSqlError::NoError)
+        {
+            error = query.lastError().text();
+            return false;
+        }
+        while(query.next())
+        {
+            Table *t = new Table(query.value(0).toString(), query.value(1).toString());
+            t->setDatabase(&connection);
+            t->introspect();
+            tables << t;
+        }
         return true;
     }
 };
@@ -155,6 +163,10 @@ QSqlQuery DataBase::exec(const QString &query)
     }
     QSqlQuery q = d->connection.exec(query);
     d->log.addEntry(q);
+    if(query.contains("create", Qt::CaseInsensitive) || query.contains("drop", Qt::CaseInsensitive))
+    {
+        d->introspect();
+    }
     return q;
 }
 

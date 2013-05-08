@@ -1,34 +1,9 @@
 #include "DataBaseTest.h"
-#include <QDir>
 #include <QtTest/QtTest>
 #include <model/DataBase.h>
 #include <model/Table.h>
 #include <model/Field.h>
 #include <QDebug>
-
-QString DataBaseTest::createTestDataBaseOnDiskFromString(const QString &filename)
-{
-    static int i = 1;
-    QString outfilename = QDir::tempPath()+"/BinOkularsDataBaseTest-number-"+QString::number(i++);
-    temporaryfiles << outfilename;
-    QFile out(outfilename);
-    out.open(QFile::WriteOnly);
-
-    QFile in(":/TestResources/Model/"+filename);
-    in.open(QFile::ReadOnly);
-    out.write(in.readAll());
-    out.close();
-    in.close();
-    return outfilename;
-}
-
-void DataBaseTest::tearDown()
-{
-    foreach(QString filename, temporaryfiles)
-    {
-        QFile::remove(filename);
-    }
-}
 
 
 void DataBaseTest::testLoadingSmallDatabase()
@@ -81,9 +56,66 @@ void DataBaseTest::testLoadingSmallDatabase()
 
         query.next();
         QVERIFY(!query.isValid());
-
-
     }
 }
 
+void DataBaseTest::testAddingAndDroppingTable()
+{
+    QString dbname = createTestDataBaseOnDiskFromString("database-1");
+    Model::DataBase database;
+    QVERIFY(database.open(dbname));
+    QCOMPARE(QString(""), database.lastError());
+    QCOMPARE(database.tables().size(), 1);
 
+    database.exec("create table BBB (name text, position text)");
+    QCOMPARE(database.tables().size(), 2);
+
+    Model::Table *table;
+    foreach(Model::Table *candidate, database.tables())
+    {
+        if(candidate->name() == "BBB")
+        {
+            table = candidate;
+            break;
+        }
+    }
+    QCOMPARE(table->columns().size(), 2);
+    QCOMPARE(table->name(), QString("BBB"));
+
+
+    Model::Field *f = table->columns()[0];
+    QCOMPARE(f->name(), QString("name"));
+    QCOMPARE(f->type(), QString("text"));
+    QCOMPARE(f->isPrimaryKey(), false);
+    QCOMPARE(f->isNotNullFlagSet(), false);
+    QCOMPARE(f->dfltValue(), QString(""));
+
+    f = table->columns()[1];
+    QCOMPARE(f->name(), QString("position"));
+    QCOMPARE(f->type(), QString("text"));
+    QCOMPARE(f->isPrimaryKey(), false);
+    QCOMPARE(f->isNotNullFlagSet(), false);
+    QCOMPARE(f->dfltValue(), QString(""));
+
+    database.exec("drop table BBB ");
+    QCOMPARE(database.tables().size(), 1);
+
+    table = database.tables()[0];
+    QCOMPARE(table->columns().size(), 2);
+
+    QCOMPARE(table->name(), QString("AAA"));
+
+    f = table->columns()[0];
+    QCOMPARE(f->name(), QString("id"));
+    QCOMPARE(f->type(), QString("integer"));
+    QCOMPARE(f->isPrimaryKey(), true);
+    QCOMPARE(f->isNotNullFlagSet(), true);
+    QCOMPARE(f->dfltValue(), QString(""));
+
+    f = table->columns()[1];
+    QCOMPARE(f->name(), QString("name"));
+    QCOMPARE(f->type(), QString("text"));
+    QCOMPARE(f->isPrimaryKey(), false);
+    QCOMPARE(f->isNotNullFlagSet(), false);
+    QCOMPARE(f->dfltValue(), QString(""));
+}

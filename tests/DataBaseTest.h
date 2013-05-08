@@ -2,21 +2,16 @@
 #define DATABASETEST_H
 
 #include <QObject>
-#include <QStringList>
+#include "TestDataBaseProvider.h"
 
-class DataBaseTest : public QObject
+class DataBaseTest : public TestDataBaseProvider
 {
     Q_OBJECT
-    
-private:
-    QString createTestDataBaseOnDiskFromString(const QString &filename);
 
 private slots:
-    void tearDown();
     void testLoadingSmallDatabase();
+    void testAddingAndDroppingTable();
 
-private:
-    QStringList temporaryfiles;
 };
 
 #endif // DATABASETEST_H
