@@ -94,7 +94,7 @@ void TableTest::testAddInvalidField()
     QVERIFY( ! t.addField(f, 1));
 }
 
-void TableTest::testAddField()
+void TableTest::testAddFieldInTheMiddle()
 {
     QString dbname = createTestDataBaseOnDiskFromString("database-1");
     {
@@ -117,6 +117,7 @@ void TableTest::testAddField()
         Model::Field newfield;
         newfield.setName("NewColumn");
         newfield.setType("text");
+        newfield.setDfltValue("\"I am new\"");
 
         QSqlQuery q = database.exec("select * from AAA");
 
@@ -143,7 +144,10 @@ void TableTest::testAddField()
         q.next();
         QVERIFY(!q.isValid());
 
-        t->addField(newfield, 1);
+        if(!t->addField(newfield, 1))
+        {
+            qDebug() << "ERROR" << t->lastError();
+        }
     }
 
     {
@@ -167,7 +171,147 @@ void TableTest::testAddField()
         QCOMPARE(candidate->name(), QString("name"));
         QCOMPARE(candidate->type(), QString("text"));
 
+        QSqlQuery q = database.exec("select * from AAA");
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 1);
+        QCOMPARE(q.value(1).toString(), QString("I am new"));
+        QCOMPARE(q.value(2).toString(), QString("Row 1"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 2);
+        QCOMPARE(q.value(1).toString(), QString("I am new"));
+        QCOMPARE(q.value(2).toString(), QString("Row 2"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 3);
+        QCOMPARE(q.value(1).toString(), QString("I am new"));
+        QCOMPARE(q.value(2).toString(), QString("Row 3"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 4);
+        QCOMPARE(q.value(1).toString(), QString("I am new"));
+        QCOMPARE(q.value(2).toString(), QString("Row 4"));
+
+        q.next();
+        QVERIFY( ! q.isValid());
+
+
     }
 }
 
 
+void TableTest::testAddFieldAtTheEnd()
+{
+    QString dbname = createTestDataBaseOnDiskFromString("database-1");
+    {
+        Model::DataBase database;
+        QVERIFY(database.open(dbname));
+        QCOMPARE(QString(""), database.lastError());
+
+        QCOMPARE(database.tables().size(), 1);
+        Model::Table *t = database.tables()[0];
+
+        QCOMPARE(t->columns().size(), 2);
+        Model::Field *candidate = t->columns()[0];
+        QCOMPARE(candidate->name(), QString("id"));
+        QCOMPARE(candidate->type(), QString("integer"));
+
+        candidate = t->columns()[1];
+        QCOMPARE(candidate->name(), QString("name"));
+        QCOMPARE(candidate->type(), QString("text"));
+
+        Model::Field newfield;
+        newfield.setName("NewColumn");
+        newfield.setType("text");
+        newfield.setDfltValue("\"I am new\"");
+
+        QSqlQuery q = database.exec("select * from AAA");
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 1);
+        QCOMPARE(q.value(1).toString(), QString("Row 1"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 2);
+        QCOMPARE(q.value(1).toString(), QString("Row 2"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 3);
+        QCOMPARE(q.value(1).toString(), QString("Row 3"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 4);
+        QCOMPARE(q.value(1).toString(), QString("Row 4"));
+
+        q.next();
+        QVERIFY(!q.isValid());
+
+        if(!t->addField(newfield))
+        {
+            qDebug() << "ERROR" << t->lastError();
+        }
+    }
+
+    {
+        Model::DataBase database;
+        QVERIFY(database.open(dbname));
+        QCOMPARE(QString(""), database.lastError());
+
+        QCOMPARE(database.tables().size(), 1);
+        Model::Table *t = database.tables()[0];
+
+        QCOMPARE(t->columns().size(), 3);
+        Model::Field *candidate = t->columns()[0];
+        QCOMPARE(candidate->name(), QString("id"));
+        QCOMPARE(candidate->type(), QString("integer"));
+
+        candidate = t->columns()[1];
+        QCOMPARE(candidate->name(), QString("name"));
+        QCOMPARE(candidate->type(), QString("text"));
+
+        candidate = t->columns()[2];
+        QCOMPARE(candidate->name(), QString("NewColumn"));
+        QCOMPARE(candidate->type(), QString("text"));
+
+
+        QSqlQuery q = database.exec("select * from AAA");
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 1);
+        QCOMPARE(q.value(1).toString(), QString("Row 1"));
+        QCOMPARE(q.value(2).toString(), QString("I am new"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 2);
+        QCOMPARE(q.value(1).toString(), QString("Row 2"));
+        QCOMPARE(q.value(2).toString(), QString("I am new"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 3);
+        QCOMPARE(q.value(1).toString(), QString("Row 3"));
+        QCOMPARE(q.value(2).toString(), QString("I am new"));
+
+        q.next();
+        QVERIFY(q.isValid());
+        QCOMPARE(q.value(0).toInt(), 4);
+        QCOMPARE(q.value(1).toString(), QString("Row 4"));
+        QCOMPARE(q.value(2).toString(), QString("I am new"));
+
+        q.next();
+        QVERIFY( ! q.isValid());
+
+
+    }
+}

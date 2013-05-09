@@ -12,7 +12,8 @@ private slots:
     void testConstructors();
     void testNonWorkingIntrospect();
     void testAddInvalidField();
-    void testAddField();
+    void testAddFieldInTheMiddle();
+    void testAddFieldAtTheEnd();
 };
 
 #endif // TABLETEST_H

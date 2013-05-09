@@ -1,8 +1,9 @@
 #include "Table.h"
 #include <QSqlField>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QSqlRecord>
-
+#include <QStringList>
 #include <QDebug>
 
 #include "Field.h"
@@ -215,9 +216,57 @@ QList<Field *> Table::columns()
 * If a NOT NULL constraint is specified, then the column must have a default value other than NULL.
 * If foreign key constraints are enabled and a column with a REFERENCES clause is added, the column must have a default value of NULL.
   */
-bool Table::addField(const Field &field, int position)
+bool Table::addField(const Field &f, int position)
 {
-    if(!d->validateFieldForAddition(field)) return false;
+
+    if(!d->validateFieldForAddition(f)) return false;
+    Field field(f);
+    QStringList queries;
+    queries << "ALTER TABLE "+d->name+" RENAME TO BinOkularsRenameTempTable";
+
+    QString query;
+    query = "CREATE TABLE "+d->name+" (";
+    bool added = false;
+    QStringList parts;
+    for(int i = 0; i < d->columns.size(); i++)
+    {
+        if(i == position)
+        {
+            added = true;
+            parts << field.toCreateDefinition();
+        }
+        parts << d->columns[i]->toCreateDefinition();
+    }
+    if(!added)
+    {
+        parts << field.toCreateDefinition();
+    }
+    query += parts.join(", ");
+    query += ")";
+    queries << query;
+
+
+    query = "INSERT INTO "+d->name+" (%1) SELECT %1 from BinOkularsRenameTempTable";
+    QStringList names;
+    foreach(Model::Field *f, d->columns)
+    {
+        names << f->name();
+    }
+    query = query.arg(names.join(", "));
+    queries << query;
+    queries << "DROP TABLE BinOkularsRenameTempTable";
+
+
+    foreach(QString q, queries)
+    {
+        QSqlQuery result = d->database->exec(q);
+        if(result.lastError().type() != QSqlError::NoError)
+        {
+            d->error = result.lastError().text();
+            return false;
+        }
+    }
+
     return true;
 }
 
