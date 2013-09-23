@@ -1,5 +1,5 @@
 #include <QDebug>
-#include <QtGui/QApplication>
+#include <QApplication>
 
 #include <gui/MainWindow.h>
 #include <gui/QuickOpenDialog.h>

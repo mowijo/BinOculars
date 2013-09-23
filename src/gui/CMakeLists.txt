@@ -4,11 +4,8 @@ PROJECT(Gui)
  
 SET(CMAKE_CXX_FLAGS "-Wall")
 
-FIND_PACKAGE( Qt4 REQUIRED )
-SET(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-SET( QT_USE_QTSQL TRUE )
-INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -17,7 +14,10 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_BINARY_DIR}
 	${CMAKE_CURRENT_BINARY_DIR}
 ) 
-
+  
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Sql REQUIRED)
+set(CMAKE_AUTOMOC ON)
 
 SET( SOURCES
     CommandHistory.cpp
@@ -41,10 +41,12 @@ SET( FORMS
     QuickOpenDialog.ui
 )
 
-QT4_ADD_RESOURCES(QRC_IMAGES images.qrc)
+QT5_ADD_RESOURCES(QRC_IMAGES images.qrc)
 
 
-QT4_WRAP_UI( UI ${FORMS} )
+QT5_WRAP_UI( UI ${FORMS} )
 
 ADD_LIBRARY( gui STATIC ${SOURCES} ${UI} ${QRC_IMAGES})
 
+qt5_use_modules(gui Widgets)
+qt5_use_modules(gui Sql)

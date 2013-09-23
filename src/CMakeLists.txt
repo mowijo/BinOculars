@@ -4,11 +4,13 @@ PROJECT(BinOkulars)
  
 SET(CMAKE_CXX_FLAGS "-Wall")
 
-FIND_PACKAGE( Qt4 REQUIRED )
-SET(CMAKE_AUTOMOC ON)
-SET( QT_USE_QTSQL TRUE )
 
-INCLUDE( ${QT_USE_FILE} )
+
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Sql REQUIRED)
+set(CMAKE_AUTOMOC ON)
+
+SET(CMAKE_AUTOMOC ON)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -38,3 +40,6 @@ ENDIF( MINGW )
 
 ADD_EXECUTABLE( BinOkulars WIN32 ${SOURCES} ${UI}  )
 TARGET_LINK_LIBRARIES( BinOkulars ${QT_LIBRARIES} gui tokenizer model )
+
+qt5_use_modules(BinOkulars Widgets)
+qt5_use_modules(BinOkulars Sql)

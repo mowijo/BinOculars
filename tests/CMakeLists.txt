@@ -4,9 +4,11 @@ PROJECT(BinOcularsTests)
  
 SET(CMAKE_CXX_FLAGS "-Wall")
 
-FIND_PACKAGE( Qt4 REQUIRED )
-SET( QT_USE_QTSQL TRUE )
-INCLUDE( ${QT_USE_FILE} )
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Sql REQUIRED)
+find_package(Qt5Test REQUIRED)
+set(CMAKE_AUTOMOC ON)
+
 INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
 INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_SOURCE_DIR}/../src)
 
@@ -28,7 +30,11 @@ SET( RESOURCES
     TestResources/resources.qrc
 )
 
-QT4_ADD_RESOURCES( RESOURCE_FILES ${RESOURCES} )
+QT5_ADD_RESOURCES( RESOURCE_FILES ${RESOURCES} )
 
 ADD_EXECUTABLE( tests ${SOURCES} ${RESOURCE_FILES} )
-TARGET_LINK_LIBRARIES( tests ${QT_QTTEST_LIBRARY} model ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( tests model  )
+
+qt5_use_modules(tests Widgets)
+qt5_use_modules(tests Sql)
+qt5_use_modules(tests Test)

@@ -16,12 +16,13 @@ private:
 
 public:
 
-    SqlSyntaxhighLighter shl;
+    SqlSyntaxhighLighter *shl;
     CommandHistory history;
 
     SqlConsolePrivate(SqlConsole *parent) : QObject(parent)
     {
         p = parent;
+		shl = new SqlSyntaxhighLighter(parent);
     }
 
 };
@@ -34,7 +35,7 @@ SqlConsole::SqlConsole(QWidget *parent) :
     d = new SqlConsolePrivate(this);
     setFont(QFont("courier"));
 
-    d->shl.setDocument(document());
+    d->shl->setDocument(document());
 }
 
 SqlConsole::~SqlConsole()

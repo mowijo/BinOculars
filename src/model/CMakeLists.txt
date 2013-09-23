@@ -4,11 +4,10 @@ PROJECT(Model)
  
 SET(CMAKE_CXX_FLAGS "-Wall")
 
-FIND_PACKAGE( Qt4 REQUIRED )
-SET(CMAKE_AUTOMOC ON)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Sql REQUIRED)
+set(CMAKE_AUTOMOC ON)
 
-SET( QT_USE_QTSQL TRUE )
-INCLUDE( ${QT_USE_FILE} )
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -27,3 +26,5 @@ SET( SOURCES
 
 ADD_LIBRARY( model STATIC ${SOURCES} )
 
+qt5_use_modules(model Widgets)
+qt5_use_modules(model Sql)
