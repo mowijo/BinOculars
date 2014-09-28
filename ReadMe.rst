@@ -1,5 +1,11 @@
 Building
 ========
 
-Run cmake on src/CMakeLists.txt
-make
+To build do:
+
+.. code:: sh
+
+  cmake BinOculars/src
+  make
+
+
