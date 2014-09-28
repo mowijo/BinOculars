@@ -1,3 +1,3 @@
 [submodule "lib/sqlhighlighter"]
 	path = lib/sqlhighlighter
-	url = git@github.com:mowijo/SqtlHighlighter.git
+	url = https://github.com/mowijo/BinOculars.git
